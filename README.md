@@ -15,6 +15,6 @@ This would train the habit to switch between Python and JS, and also allows
 to observe similarities
 
 ## 🗒️ Note:
-The code could be verbose for the following reasons:
-- shareable solutions
-- beginner friendly
+The code could be verbose and commented for the following reasons:
+- the solutions would be share
+- the intents are to let people read the code as friendly as it could be
