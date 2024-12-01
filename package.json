@@ -1,0 +1,12 @@
+{
+  "name": "AdventOfCode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run-challenge": "node ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
