@@ -7,7 +7,7 @@ exports.logValue = value => {
 			.values(value)
 			.some(v => v instanceof Object)
 	){
-		logger = console.log
+		logger = console.info
 	}
 	logger({ value })
 	return value
