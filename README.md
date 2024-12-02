@@ -3,6 +3,13 @@ When participating to the Advent Of Code, this represent
 my submissions organized by folder.  
 All submissions would lies in folders named as a year.  
 
+## Embarked features
+- CLI execution navigation: run x challenge on x year / x day
+- CLI automation: CLI execution navigation enhancement in  
+running the command in a new day --> will create a folder for the  
+current day
+
+
 ## How to run 
 Navigating through the folders using CLI was enhanced.  
 We can provide an argument to the CLI corresponding to the challenge to check
