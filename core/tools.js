@@ -14,9 +14,10 @@ exports.logValue = value => {
 }
 
 /** Error callback logger - logs error or logs No Error Feedback */
-exports.watchError = (err, isSilenced = false) => {
+exports.watchError = (err, isSilenced) => {
 	if(err) {
-		console.error('\n❌ [ CAUGHT ERROR ]\n', err.message )
+		let message = '\n❌ [ ERROR CAUGHT ]\n';
+		console.error( message, err.message )
 		return err
 	}
 	!isSilenced && console.info('\nError Feedback: No Error - Operation was successful! Please Proceed.')

@@ -1,4 +1,4 @@
 
-const { executeChallenge } = require("./core/commands");
+const { executeChallenge } = require('./core/commands');
 
 executeChallenge()
