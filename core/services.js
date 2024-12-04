@@ -2,6 +2,7 @@
 const fs 				= require('node:fs/promises')
 const path 				= require('node:path')
 const { getTodayEndpoint, getTodayInput } 	= require('./constants')
+const { watchError } = require('./tools')
 
 
 /* -------------------------------------------------------------------------- */
@@ -32,12 +33,13 @@ const getTodayAoCChallenge = async (year, day) => {
 		// Gets AoC input content
 		response 		= await fetch(
 			getTodayInput( year, day ),
-			{ headers: { cookie: `session=${ process.env.COOKIE }` }
+			{ headers: { 'Cookie': `session=${ process.env.COOKIE }` }
 		})
 		const inputContent = await response.text()
 
-		return { challengeContent, inputContent}
+		return { challengeContent, inputContent }
 	} catch( error ){
+		watchError( error )
 		console.error( error )
 	}
 
@@ -49,6 +51,10 @@ const getTodayAoCChallenge = async (year, day) => {
 /* -------------------------------------------------------------------------- */
 
 const getRootDir = dirnamePath => path.resolve(dirnamePath, '..')
+
+const getYearPathFromPath = folderDayPath => {
+	return folderDayPath.replace(/day-\d{1,}/, '')
+}
 
 const getTemplateContents = async () => {
 	const TEMPLATES_PATH = `${ __dirname }/templates.txt`
@@ -76,7 +82,7 @@ const getTemplateContents = async () => {
  * @param {*} day 
  */
 const setChallengeFolder = async( folderDayPath ) => {
-	const folderYearPath = folderDayPath.replace(/day-\d{1,}/, '')
+	const folderYearPath = getYearPathFromPath(folderDayPath)
 
 	const day = folderDayPath.slice(-2)
 
@@ -91,10 +97,10 @@ const setChallengeFolder = async( folderDayPath ) => {
 		await fs.writeFile(`${ folderDayPath }/README.md`, '')
 		await fs.writeFile(`${ folderDayPath }/input.txt`, '')
 	} catch( error ){
-		console.error(error.message)
+		watchError(error.message)
 		console.error(error)
 		await fs.mkdir(folderYearPath)
-		setChallengeFolder(folderDayPath)
+		await setChallengeFolder(folderDayPath)
 	}
 	return {
 		folderDay	: folderDayPath,
