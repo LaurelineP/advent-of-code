@@ -1,13 +1,25 @@
 # 🎄 Advent Of Code 🎄 
-When participating to the Advent Of Code, this represent  
-my submissions organized by folder.  
-All submissions would lies in folders named as a year.  
 
-## 📦 Embarked features
+> [ Advent Of Code Website ](https://adventofcode.com)
+
+Repo containing all participations on The Advent Of Code Event.
+Beside storing all solutions - this is also a project with  
+Development Experience features for my files and folders organisations.
+
+The Challenge here, was to take ownership of this event figure out how
+to make a project out of it. Transforming 
+- from a simple storing repo
+- to a project involving more features
+
+
+## 🚀 Embarked features
 - CLI execution navigation: run x challenge on x year / x day
-- CLI automation: CLI execution navigation enhancement in  
-running the command in a new day --> will create a folder for the  
-current day
+- CLI file system automations: CLI execution navigation enhancement:
+  on running a command: this should build a folder and files
+- CLI file system automations enhancements: observed repeated accross
+  files from day folder: made a template for each file
+  [ day-xx/index.js, day-xx/services.js ] which are injected in
+  the corresponding file
 
 
 ## ⏯️ How to run 
