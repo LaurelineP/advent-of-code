@@ -13,13 +13,21 @@ to make a project out of it. Transforming
 
 
 ## 🚀 Embarked features
-- CLI execution navigation: run x challenge on x year / x day
-- CLI file system automations: CLI execution navigation enhancement:
+- [x] CLI execution navigation: run x challenge on x year / x day
+- [x] CLI file system automations: CLI execution navigation enhancement:  
   on running a command: this should build a folder and files
-- CLI file system automations enhancements: observed repeated accross
-  files from day folder: made a template for each file
-  [ day-xx/index.js, day-xx/services.js ] which are injected in
-  the corresponding file
+  - `README.md` content - AoD x Day challenge content fetched and parsed
+  - `input.txt` content - AoD x Day data input content fetched
+  - `index.js` content - a TODO log
+- [x] CLI file system automations enhancements: observed repeated accross  
+  files from day folder: made a template for each file  
+  ( `day-xx/index.js`, `day-xx/services.js` ) to inject on file creation
+  - populated code template per file
+    ---- TODO / NEXT IDEAS
+- [ ] Update x day `README.md` file: as the site displays part 2 after submitting part 1
+- [ ] CLI command to submit from terminal the answer
+   - [ ] step 1: submit for part 1
+   - [ ] step 2: submit for part 2
 
 
 ## ⏯️ How to run 
