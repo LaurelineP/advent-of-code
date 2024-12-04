@@ -1,5 +1,5 @@
 const { getInputData, isDeltaIncluded } = require('./services')
-const { logValue } = require('../../core/tools')
+const { logValue, watchError } = require('../../core/tools')
 
 
 let edgeCases = []
@@ -76,31 +76,35 @@ const runPartTwo = data => {
 	console.info('\n2. Count with extra safe reports')
 	const extraSaved = data.filter( isSaveable )
 	logValue({ savedCount: totalSaved + extraSaved.length })
-
 }
 
 
 const runSolutions = async () => {
-	const data = await getInputData()
-	runPartOne(data)
-	runPartTwo(edgeCases)
+	try {
+		const data = await getInputData()
+		runPartOne(data)
+		runPartTwo(edgeCases)
+	} catch ( error ){
+		watchError(error.message)
+		console.error(error)
+	}
 	/**
-		=============== 📌 Day 02 - AoC 2024 =============== 
+			=============== 📌 Day 02 - AoC 2024 =============== 
 
-		1. Safe reports count
-		┌─────────┬────────────┐
-		│ (index) │ savedCount │
-		├─────────┼────────────┤
-		│  value  │    306     │
-		└─────────┴────────────┘
+			1. Safe reports count
+			┌─────────┬────────────┐
+			│ (index) │ savedCount │
+			├─────────┼────────────┤
+			│  value  │    306     │
+			└─────────┴────────────┘
 
-		2. Count with extra safe reports
-		┌─────────┬────────────┐
-		│ (index) │ savedCount │
-		├─────────┼────────────┤
-		│  value  │    366     │
-		└─────────┴────────────┘
-	 */
+			2. Count with extra safe reports
+			┌─────────┬────────────┐
+			│ (index) │ savedCount │
+			├─────────┼────────────┤
+			│  value  │    366     │
+			└─────────┴────────────┘
+		*/
 }
 
 runSolutions()
