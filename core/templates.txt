@@ -42,6 +42,5 @@ const getInputData = async () => {
 
 
 module.exports = {
-	getInputData,
-	isDeltaIncluded
+	getInputData
 }
