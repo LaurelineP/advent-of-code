@@ -2,7 +2,6 @@
 const fs 				= require('node:fs/promises')
 const path 				= require('node:path')
 const { getTodayEndpoint, getTodayInput } 	= require('./constants')
-const { writeFile } = require('node:fs')
 
 
 /* -------------------------------------------------------------------------- */
@@ -51,7 +50,20 @@ const getTodayAoCChallenge = async (year, day) => {
 
 const getRootDir = dirnamePath => path.resolve(dirnamePath, '..')
 
+const getTemplateContents = async () => {
+	const TEMPLATES_PATH = `${ __dirname }/templates.txt`
+	let contents = await fs.readFile( TEMPLATES_PATH, 'utf-8' )
+	contents = contents.split('---').reduce((acc, _content) => {
+		// const fileDestination = _content.match(/\/\/\s*(.+?)\.js/)[0].replaceAll(/[\/*(.+?)\.js]/g, '')
+		const fileDestination = _content
+			.match(/\/\/\s*(.+?)\.js/)[0]
+			.replaceAll(/\/|\s|\.js/g, '')
 
+			acc[ fileDestination ] = _content.replace(/\/\/\s*(.+?)\.js/, '').trim()
+			return acc
+	}, {})
+	return contents
+}
 
 /**
  * Creates all necessary folders / files to be ready to start
@@ -67,10 +79,15 @@ const setChallengeFolder = async( folderDayPath ) => {
 	const folderYearPath = folderDayPath.replace(/day-\d{1,}/, '')
 
 	const day = folderDayPath.slice(-2)
+
 	try {
 		await fs.access( folderYearPath )
 		await fs.mkdir( folderDayPath )
-		await fs.writeFile(`${ folderDayPath }/index.js`, `console.info('TODO: Day ${ day }')`)
+		let { index, services } = await getTemplateContents()
+		index = `console.info('TODO: Day ${ day }')\n${index}`
+		
+		await fs.writeFile(`${ folderDayPath }/index.js`, index )
+		await fs.writeFile(`${ folderDayPath }/services.js`, services )
 		await fs.writeFile(`${ folderDayPath }/README.md`, '')
 		await fs.writeFile(`${ folderDayPath }/input.txt`, '')
 	} catch( error ){

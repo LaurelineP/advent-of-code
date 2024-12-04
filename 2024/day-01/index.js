@@ -30,19 +30,16 @@ const runPartTwo = ( leftColumn, rightColumn ) => {
 const runSolutions = async () => {
 	try {
 		const leftAndRightValues = await getInputData()
-		
 
 		// Sorts both columns
 		leftAndRightValues
 			.map( sideColumn => sideColumn.sort((a, b) => a - b))
 
-		
 		runPartOne( ...leftAndRightValues )
 		runPartTwo( ...leftAndRightValues )
 
-
 	} catch( error ){
-		console.error(error.message)
+		watchError(error)
 		console.error(error)
 	}
 	/** Returns
