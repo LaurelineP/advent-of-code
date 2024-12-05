@@ -43,5 +43,5 @@ const getInputData = async () => {
 
 
 module.exports = {
-	getInputData
+	getInputData,
 }
