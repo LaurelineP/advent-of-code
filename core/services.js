@@ -1,9 +1,17 @@
 
 const fs 				= require('node:fs/promises')
-const path 				= require('node:path')
-const { getTodayEndpoint, getTodayInput } 	= require('./constants')
-const { watchError } = require('./tools')
 
+const { watchError } 	= require('./tools')
+
+const { doesPathExist } = require('./utils')
+
+const { sliceYearPathFromPath } = require('./helpers')
+
+const {
+	TEMPLATE_SEPARATOR,
+	getTodayEndpoint,
+	getTodayInputEndpoint
+} = require('./constants')
 
 /* -------------------------------------------------------------------------- */
 /*                                     AOC                                    */
@@ -32,7 +40,7 @@ const getTodayAoCChallenge = async (year, day) => {
 
 		// Gets AoC input content
 		response 		= await fetch(
-			getTodayInput( year, day ),
+			getTodayInputEndpoint( year, day ),
 			{ headers: { 'Cookie': `session=${ process.env.COOKIE }` }
 		})
 		const inputContent = await response.text()
@@ -50,27 +58,37 @@ const getTodayAoCChallenge = async (year, day) => {
 /*                                 FILE SYSTEM                                */
 /* -------------------------------------------------------------------------- */
 
-const getRootDir = dirnamePath => path.resolve(dirnamePath, '..')
-
-const getYearPathFromPath = folderDayPath => {
-	return folderDayPath.replace(/day-\d{1,}/, '')
+const createYearFolder = async generatedPath => {
+	try {
+		await fs.mkdir( generatedPath, { recursive: true } )
+	} catch( error ){
+		console.error( 'Could not create dir path')
+		console.error( error )
+	}
 }
+/* -------------------------------------------------------------------------- */
+/*                            PROJECT ORGANIZATIONS                           */
+/* -------------------------------------------------------------------------- */
 
 const getTemplateContents = async () => {
+
 	const TEMPLATES_PATH = `${ __dirname }/templates.txt`
-	let contents = await fs.readFile( TEMPLATES_PATH, 'utf-8' )
-	contents = contents.split('---').reduce((acc, _content) => {
-		// const fileDestination = _content.match(/\/\/\s*(.+?)\.js/)[0].replaceAll(/[\/*(.+?)\.js]/g, '')
-		const fileDestination = _content
-			.match(/\/\/\s*(.+?)\.js/)[0]
-			.replaceAll(/\/|\s|\.js/g, '')
 
-			acc[ fileDestination ] = _content.replace(/\/\/\s*(.+?)\.js/, '').trim()
-			return acc
-	}, {})
-	return contents
+	try {
+		let contents = await fs.readFile( TEMPLATES_PATH, 'utf-8' )
+			contents = contents.split(TEMPLATE_SEPARATOR).reduce((acc, _content) => {
+			const fileDestination = _content
+				.match(/\/\/\s*(.+?)\.js/)[0]
+				.replaceAll(/\/|\s|\.js/g, '')
+
+				acc[ fileDestination ] = _content.replace(/\/\/\s*(.+?)\.js/, '').trim()
+				return acc
+		}, {})
+		return contents
+	} catch( error ){
+		watchError( error )
+	}
 }
-
 /**
  * Creates all necessary folders / files to be ready to start
  *  - folder for x year if necessary
@@ -81,26 +99,26 @@ const getTemplateContents = async () => {
  * @param {*} year 
  * @param {*} day 
  */
-const setChallengeFolder = async( folderDayPath ) => {
-	const folderYearPath = getYearPathFromPath(folderDayPath)
+const setupChallengeFolder = async( folderDayPath ) => {
+	const folderYearPath = sliceYearPathFromPath( folderDayPath )
 
-	const day = folderDayPath.slice(-2)
+	const day = folderDayPath.slice( -2 )
 
 	try {
-		await fs.access( folderYearPath )
-		await fs.mkdir( folderDayPath )
-		let { index, services } = await getTemplateContents()
-		index = `console.info('TODO: Day ${ day }')\n${index}`
+		const doesExist = await doesPathExist( folderYearPath )
+		if( doesExist ){
 		
-		await fs.writeFile(`${ folderDayPath }/index.js`, index )
-		await fs.writeFile(`${ folderDayPath }/services.js`, services )
-		await fs.writeFile(`${ folderDayPath }/README.md`, '')
-		await fs.writeFile(`${ folderDayPath }/input.txt`, '')
+			let { index, services } = await getTemplateContents()
+			index = `console.info('TODO: Day ${ day }')\n${index}`
+			
+			await fs.writeFile(`${ folderDayPath }/index.js`, index )
+			await fs.writeFile(`${ folderDayPath }/services.js`, services )
+			await fs.writeFile(`${ folderDayPath }/README.md`, '')
+			await fs.writeFile(`${ folderDayPath }/input.txt`, '')
+		}
 	} catch( error ){
-		watchError(error.message)
-		console.error(error)
-		await fs.mkdir(folderYearPath)
-		await setChallengeFolder(folderDayPath)
+		watchError( error.message )
+		console.error( error )
 	}
 	return {
 		folderDay	: folderDayPath,
@@ -113,7 +131,7 @@ const setChallengeFolder = async( folderDayPath ) => {
 
 
 module.exports = {
-	getRootDir,
+	createYearFolder,
 	getTodayAoCChallenge,
-	setChallengeFolder
+	setupChallengeFolder
 }
