@@ -5,12 +5,14 @@ const { watchError } 	= require('./tools')
 
 const { doesPathExist } = require('./utils')
 
-const { sliceYearPathFromPath } = require('./helpers')
+const {
+	sliceYearPathFromPath, 
+	getTodayEndpoint,
+	getTodayInputEndpoint
+} = require('./helpers')
 
 const {
 	TEMPLATE_SEPARATOR,
-	getTodayEndpoint,
-	getTodayInputEndpoint
 } = require('./constants')
 
 /* -------------------------------------------------------------------------- */
@@ -27,7 +29,7 @@ const getTodayAoCChallenge = async (year, day) => {
 		// Parse HTML Challenge Text 
 		const contentStartIdx 	= responseText.indexOf('<article')
 		const contentEndIdx 	= responseText.indexOf('</article>') + '</article>'.length
-		const contentHTML 		= responseText.slice(contentStartIdx, contentEndIdx)
+		const contentHTML 		= responseText.slice( contentStartIdx, contentEndIdx )
 
 		// Getting MarkDown
 		const challengeContent = '# ' + contentHTML
@@ -99,7 +101,7 @@ const getTemplateContents = async () => {
  * @param {*} year 
  * @param {*} day 
  */
-const setupChallengeFolder = async( folderDayPath ) => {
+const setupChallengeFolder = async folderDayPath => {
 	const folderYearPath = sliceYearPathFromPath( folderDayPath )
 
 	const day = folderDayPath.slice( -2 )

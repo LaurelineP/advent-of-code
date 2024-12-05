@@ -9,12 +9,11 @@ const { exec } = require('node:child_process')
 
 const { watchError } = require('./tools')
 const { formatDay, doesPathExist } = require('./utils')
-const { getGeneratedPath, extractYearAndDayFromPath, sliceYearPathFromPath } = require('./helpers')
+const { getGeneratedPath, extractYearAndDayFromPath } = require('./helpers')
 const { createYearFolder } = require('./services')
 
 const {
 	APP_NAME,
-	CURRENT_YEAR,
 	CURRENT_DAY
 } = require('./constants')
 const {
@@ -22,58 +21,6 @@ const {
 	getTodayAoCChallenge
 } = require('./services')
 const { exit, kill } = require('node:process')
-
-
-
-/* --------------------------- FILE SYSTEM HELPERS -------------------------- */
-
-
-/* -------------------------------------------------------------------------- */
-/*                      FILE RESOLUTION BASED ON COMMAND                      */
-/* -------------------------------------------------------------------------- */
-
-/**  Generates folder YYYY/day-DD path string  */
-const getGeneratedPathByDayInput = argValue => {
-	return getGeneratedPath( argValue )
-}
-
-/**  Generates folder YYYY/day-DD */
-const getGeneratedPathByYearInput = argValue => {
-	return `${ getGeneratedDirPath( argValue )}/day-${ CURRENT_DAY }`
-}
-
-const getGeneratedPathByDayAndYear = ( argValue ) => {
-	const parsedValues = argValue.trim().split(/[-|_|\/]/)
-	const year 	= parsedValues[0].length < 4 ? parsedValues[1] : parsedValues[0]
-	const day 	= parsedValues[0].length < 4 ? parsedValues[0] : parsedValues[1]
-	return `${getGeneratedDirPath( year )}/day-${ formatDay( day )}`
-}
-
-/* -------------------------------------------------------------------------- */
-/*                    AUTO GENERATE FOLDER FOR DEDUCTED DAY                   */
-/* -------------------------------------------------------------------------- */
-const MAX = 25
-/**
- * Create folder challenge for current new day
- * @param {*} generatedPath 
- */
-const addPath = async generatedPath => {
-	const [ yearValue, dayValue ] = extractYearAndDayFromPath( generatedPath ).map( Number )
-
-	try {
-		const { readmeFile, inputFile } = await setupChallengeFolder( generatedPath )
-
-		const { challengeContent, inputContent } = await getTodayAoCChallenge( yearValue, dayValue )
-		challengeContent && await fs.writeFile( readmeFile, challengeContent )
-		inputContent && await fs.writeFile( inputFile, inputContent )
-
-	} catch( error ){
-		console.error( 'Could not add path')
-	}
-}
-
-
-
 
 
 /* -------------------------------------------------------------------------- */
@@ -95,6 +42,7 @@ const executeChallenge = async () => {
 				if( stderr || err ){
 
 					watchError(new Error('Missing file(s)content'))
+
 					const relativeChallengeFolderPath = path.relative(__dirname, challengeFolderPath).slice(1)
 					console.error('🗑️  Removing folder...')
 
@@ -108,11 +56,22 @@ const executeChallenge = async () => {
 				console.info( stdout )
 			})
 		} else {
-			// Create folder and its content
 			console.info('\n🧵 Creating the challenge folder...')
 
+		
+			// Create folder day
 			await createYearFolder( challengeFolderPath )
-			await setupChallengeFolder( challengeFolderPath )
+
+			// Creates folder day inner files
+			const [ year, day ] = extractYearAndDayFromPath( challengeFolderPath )
+			const { readmeFile, inputFile } = await setupChallengeFolder( challengeFolderPath )
+
+			// Get challenge details
+			const { challengeContent, inputContent } = await getTodayAoCChallenge( year, day )
+
+			// Populate concerned file with challenge details
+			challengeContent 	&& await fs.writeFile( readmeFile, challengeContent )
+			inputContent 		&& await fs.writeFile( inputFile, inputContent )
 
 			const createdFolder = './' + challengeFolderPath.split( APP_NAME + '/' )[1]
 			console.info(`✅ Challenge folder created!\n   ▶️ 🗂️  ${createdFolder}\n`)
@@ -126,5 +85,3 @@ const executeChallenge = async () => {
 module.exports = {
 	executeChallenge
 }
-
-

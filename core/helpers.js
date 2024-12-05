@@ -24,9 +24,9 @@ const {
 /*                            AOC ENDPOINTS RELATED                           */
 /* -------------------------------------------------------------------------- */
 
-const getTodayEndpoint = (year, day) => `${ AOC_URL }/${ year }/day/${ day }`
+const getTodayEndpoint = (year, day) => `${ AOC_URL }/${ Number(year) }/day/${ Number(day) }`
 
-const getTodayInputEndpoint = (year, day) => getTodayEndpoint( year, day ) + '/input'
+const getTodayInputEndpoint = (year, day) => getTodayEndpoint( Number(year), Number(day) ) + '/input'
 
 
 
