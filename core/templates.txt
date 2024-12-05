@@ -17,6 +17,7 @@ const runSolutions = async () => {
 	runPartOne(data)
 	// runPartTwo()
 }
+runSolutions()
 
 
 ---
