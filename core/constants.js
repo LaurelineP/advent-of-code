@@ -35,8 +35,7 @@ module.exports = {
 	DATE_SEGMENT_LENGTH,
 	DAY_SEGMENT_LENGTH,
 	TEMPLATE_SEPARATOR,
-	
-	
+	AOC_URL
 }
 
 
