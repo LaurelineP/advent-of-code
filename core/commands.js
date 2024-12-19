@@ -48,7 +48,7 @@ const executeChallenge = async () => {
 				}
 			})
 		} else {
-			console.info('\n🧵 Creating the challenge folder...')
+			console.info('\n📦 Creating the challenge folder...')
 
 			// Create folder day
 			await createChallengeFolder( challengeFolderPath )
@@ -57,7 +57,7 @@ const executeChallenge = async () => {
 			const { readmeFile, inputFile } = await setupChallengeFolder( challengeFolderPath )
 
 			// Get challenge details
-			console.info('\tFetching today\'s challenge description and data input...')
+			console.info('\n🛜  Fetching today\'s challenge description and data input...')
 			const { challengeContent, inputContent } = await getTodayAoCChallenge( year, day )
 
 			// Populate concerned file with challenge details
@@ -65,15 +65,14 @@ const executeChallenge = async () => {
 			inputContent 		&& await fs.writeFile( inputFile, inputContent )
 
 			const createdFolder = './' + challengeFolderPath.split( APP_NAME + '/' )[1]
-			console.info(`\n✅ Challenge folder created!\n   ▶️ 🗂️  ${createdFolder}\n`)
-			console.info(`\n🚀 Launching challenge script...\n`)
+			console.info(`\n✅ Challenge folder created!\n   ▶️ 🗂️  ${createdFolder}`)
+			console.info(`\n\n\n\n\n🚀 Running the challenge script...\n   Code ready for changes:\n   ▶️ 🗂️  ${createdFolder}/index.js \n`)
 			return await executeChallenge()
 		}
 	} catch( error ) {
 		watchError( error )
 	}
 }
-
 
 module.exports = {
 	executeChallenge
