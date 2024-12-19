@@ -19,7 +19,6 @@ const {
 	DAY_SEGMENT_LENGTH
 } = require('./constants')
 
-
 /* -------------------------------------------------------------------------- */
 /*                            AOC ENDPOINTS RELATED                           */
 /* -------------------------------------------------------------------------- */
@@ -72,7 +71,7 @@ const getGeneratedPathByYearInput = argValue => {
 	return `${ generateYearFolderPath( argValue )}/day-${ CURRENT_DAY }`
 }
 
-// 
+/** Generates folder YYY/day-DD - based on expected input with day and year (any format) */ 
 const getGeneratedPathByDayAndYear = ( argValue ) => {
 	const parsedValues = argValue.trim().split(/[-|_|\/]/)
 	const year 	= parsedValues[0].length < 4 ? parsedValues[1] : parsedValues[0]

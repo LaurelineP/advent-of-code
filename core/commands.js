@@ -2,25 +2,19 @@
  * Handles CLI options for the advent of code,
  * resolving the challenge file to execute
  */
-
 const fs = require('node:fs/promises')
-const path = require('node:path')
-const { exec } = require('node:child_process')
+const { spawn } = require('node:child_process')
 
 const { watchError } = require('./tools')
-const { formatDay, doesPathExist } = require('./utils')
+const { doesPathExist } = require('./utils')
 const { getGeneratedPath, extractYearAndDayFromPath } = require('./helpers')
-const { createYearFolder } = require('./services')
+const { createChallengeFolder } = require('./services')
 
-const {
-	APP_NAME,
-	CURRENT_DAY
-} = require('./constants')
+const { APP_NAME, LOG_SEPARATOR } = require('./constants')
 const {
 	setupChallengeFolder,
 	getTodayAoCChallenge
 } = require('./services')
-const { exit, kill } = require('node:process')
 
 
 /* -------------------------------------------------------------------------- */
@@ -28,45 +22,42 @@ const { exit, kill } = require('node:process')
 /* -------------------------------------------------------------------------- */
 const executeChallenge = async () => {
 	const argValue 		= process.argv[ 2 ] || null
+
+	// Resolves date
 	const challengeFolderPath = getGeneratedPath( argValue )
 
+
+	const [ year, day ] = extractYearAndDayFromPath( challengeFolderPath )
+	const headerMessage = `=============== 📌 Day ${ day } - AoC ${ year } ===============`
 	// Executes challenge or Create the challenge folder and its content
 	try {
 		const isExistingPath = await doesPathExist( challengeFolderPath )
 
-		// Executes challenge
+		// Executes the challenge folder
 		if( isExistingPath ){
-			exec(`node ${ challengeFolderPath  }`,async (err, stdout, stderr) => {
-				const [ year, day ] = extractYearAndDayFromPath( challengeFolderPath )
-				
-				if( stderr || err ){
+			let spawned = spawn(`node`, [ '--watch', challengeFolderPath + '/index.js'])
 
-					watchError(new Error('Missing file(s)content'))
-
-					const relativeChallengeFolderPath = path.relative(__dirname, challengeFolderPath).slice(1)
-					console.error('🗑️  Removing folder...')
-
-					await fs.rm( challengeFolderPath, { recursive: true } )
-					console.error('✅ Folder removed!\n \ ▶️ 🗂️ ', relativeChallengeFolderPath, '\n')
-
-					return exit(1)
+			// Gets child's process logs of the executed code
+			console.info(`\n${ headerMessage }\n`)
+			spawned.stdout.setEncoding('utf-8')
+			spawned.stdout.on('data', data => {
+				if( !data.includes( challengeFolderPath )){
+					console.info( data )
+				} else {
+					console.info( `${LOG_SEPARATOR}\n` )
 				}
-
-				console.info(`\n=============== 📌 Day ${ day } - AoC ${ year } =============== `)
-				console.info( stdout )
 			})
 		} else {
 			console.info('\n🧵 Creating the challenge folder...')
 
-		
 			// Create folder day
-			await createYearFolder( challengeFolderPath )
+			await createChallengeFolder( challengeFolderPath )
 
-			// Creates folder day inner files
-			const [ year, day ] = extractYearAndDayFromPath( challengeFolderPath )
+			// Prepares folders and inner files
 			const { readmeFile, inputFile } = await setupChallengeFolder( challengeFolderPath )
 
 			// Get challenge details
+			console.info('\tFetching today\'s challenge description and data input...')
 			const { challengeContent, inputContent } = await getTodayAoCChallenge( year, day )
 
 			// Populate concerned file with challenge details
@@ -74,7 +65,9 @@ const executeChallenge = async () => {
 			inputContent 		&& await fs.writeFile( inputFile, inputContent )
 
 			const createdFolder = './' + challengeFolderPath.split( APP_NAME + '/' )[1]
-			console.info(`✅ Challenge folder created!\n   ▶️ 🗂️  ${createdFolder}\n`)
+			console.info(`\n✅ Challenge folder created!\n   ▶️ 🗂️  ${createdFolder}\n`)
+			console.info(`\n🚀 Launching challenge script...\n`)
+			return await executeChallenge()
 		}
 	} catch( error ) {
 		watchError( error )
