@@ -36,6 +36,8 @@ to make a project out of it. Transforming
 Navigating through the folders using CLI was enhanced.  
 We can provide an argument to the CLI corresponding to the challenge to check
 
+https://github.com/user-attachments/assets/74ff6fcc-a654-445d-abda-93cfa19b42ec
+
 1. By default - it will run today's code
 	```sh
 	pnpm run-challenge
@@ -79,3 +81,5 @@ only based on your input
 	# Will execute ./2024/day-01 challenge
 
 	```
+
+## 💻 Challenges
