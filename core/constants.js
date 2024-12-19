@@ -8,6 +8,7 @@ const { formatDay } = require('./utils')
 /* -------------------------------------------------------------------------- */
 const APP_NAME = require('../package.json').name
 const TEMPLATE_SEPARATOR = '---'
+const LOG_SEPARATOR = '====================================================='
 
 
 /* -------------------------------------------------------------------------- */
@@ -15,7 +16,7 @@ const TEMPLATE_SEPARATOR = '---'
 /* -------------------------------------------------------------------------- */
 const CURRENT_DATE = new Date()
 const CURRENT_YEAR = CURRENT_DATE.getFullYear()
-const CURRENT_DAY  = formatDay( CURRENT_DATE.getDay() + 1)
+const CURRENT_DAY  = formatDay( CURRENT_DATE.getDate())
 const DATE_SEGMENT_LENGTH = 'YYYY/day-DD'.length
 const DAY_SEGMENT_LENGTH = '/day-DD'.length
 
@@ -35,7 +36,8 @@ module.exports = {
 	DATE_SEGMENT_LENGTH,
 	DAY_SEGMENT_LENGTH,
 	TEMPLATE_SEPARATOR,
-	AOC_URL
+	AOC_URL,
+	LOG_SEPARATOR
 }
 
 

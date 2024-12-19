@@ -26,12 +26,12 @@ const getTodayAoCChallenge = async (year, day) => {
 		let response 		= await fetch( getTodayEndpoint( year, day ) )
 		let responseText 	= await response.text()
 
-		// Parse HTML Challenge Text 
+		// Parses the HTML Challenge's content text 
 		const contentStartIdx 	= responseText.indexOf('<article')
 		const contentEndIdx 	= responseText.indexOf('</article>') + '</article>'.length
 		const contentHTML 		= responseText.slice( contentStartIdx, contentEndIdx )
 
-		// Getting MarkDown
+		// Adjusts HTML to MarkDown
 		const challengeContent = '# ' + contentHTML
 			.replaceAll(/<pre><code>|<\/code><\/pre>/g, '```\n')
 			.replaceAll(/<code>|<\/code>/g, '`')
@@ -40,8 +40,8 @@ const getTodayAoCChallenge = async (year, day) => {
 			.replaceAll(/<.+?>/g, '')
 
 
-		// Gets AoC input content
-		response 		= await fetch(
+		// Gets AoC input's content ( = challenge's data )
+		response = await fetch(
 			getTodayInputEndpoint( year, day ),
 			{ headers: { 'Cookie': `session=${ process.env.COOKIE }` }
 		})
@@ -60,7 +60,8 @@ const getTodayAoCChallenge = async (year, day) => {
 /*                                 FILE SYSTEM                                */
 /* -------------------------------------------------------------------------- */
 
-const createYearFolder = async generatedPath => {
+/** Create folder path recursively ( parents folders if necessary ) */
+const createChallengeFolder = async generatedPath => {
 	try {
 		await fs.mkdir( generatedPath, { recursive: true } )
 	} catch( error ){
@@ -72,6 +73,9 @@ const createYearFolder = async generatedPath => {
 /*                            PROJECT ORGANIZATIONS                           */
 /* -------------------------------------------------------------------------- */
 
+/** Get's local template.txt and parses it to return contents:
+	@returns string | undefined
+ */
 const getTemplateContents = async () => {
 
 	const TEMPLATES_PATH = `${ __dirname }/templates.txt`
@@ -92,14 +96,11 @@ const getTemplateContents = async () => {
 	}
 }
 /**
- * Creates all necessary folders / files to be ready to start
+ * Creates all necessary folders / files to be ready to start developing
  *  - folder for x year if necessary
  * 	- folder for x day if necessary
  *  - file index.js
  *  - file README.md
- * 
- * @param {*} year 
- * @param {*} day 
  */
 const setupChallengeFolder = async folderDayPath => {
 	const folderYearPath = sliceYearPathFromPath( folderDayPath )
@@ -133,7 +134,7 @@ const setupChallengeFolder = async folderDayPath => {
 
 
 module.exports = {
-	createYearFolder,
+	createChallengeFolder,
 	getTodayAoCChallenge,
 	setupChallengeFolder
 }
