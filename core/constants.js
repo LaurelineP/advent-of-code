@@ -6,7 +6,7 @@ const { formatDay } = require('./utils')
 /* -------------------------------------------------------------------------- */
 /*                               PROJECT RELATED                              */
 /* -------------------------------------------------------------------------- */
-const APP_NAME = require('../package.json').name
+const APP_NAME = 'advent-of-code'
 const TEMPLATE_SEPARATOR = '---'
 const LOG_SEPARATOR = '====================================================='
 
