@@ -1,44 +1,38 @@
 # 🎄 Advent Of Code 🎄 
 
 > [ Advent Of Code Website ](https://adventofcode.com)
+The project transforms a simple repository into an integrated, developer-friendly environment by centralizing instructions and automating key workflows. It:
 
-Repo containing all participations on The Advent Of Code Event.
-Beside storing all solutions - this is also a project with  
-Development Experience features for my files and folders organisations.
+- **Centralizes Documentation**:
+All instructions and challenge details from the Advent Of Code website are maintained in one place (the README), reducing the need to switch contexts during development.
 
-The Challenge here, was to take ownership of this event figure out how
-to make a project out of it. Transforming 
-- from a simple storing repo
-- to a project involving more features
+- **Automates Daily Challenge Setup**:
+The project abstracts the manual process of creating folders and files (like index.js, services.js, and input files) by automating their generation when launching a challenge.
 
+- **Enhances Developer Workflow**:
+By automating file creation and challenge launch through CLI commands, developers can focus on solving the problems rather than on repetitive setup tasks.
 
-## 🚀 Embarked features
-- [x] CLI execution navigation:  
-      run x challenge on x year / x day
-- [x] CLI file system automations:   
-     CLI execution navigation enhancement, on running a command,   
-      this should build a folder and files within
-  - `README.md` content - AoD x Day challenge content fetched and parsed
-  - `input.txt` content - AoD x Day data input content fetched
-  - `index.js` content - a TODO log
-- [x] CLI file system automations enhancements:  
-   observed repeated accross files from day folder: made a template for each file
-  - `index.js` content - template code
-  - `services.js`  content - template code
-
-- [ ] Update x day `README.md` file: as the site displays part 2 after submitting part 1
-- [ ] CLI command to submit the answers from the terminal
-   - [ ] step 1: submit for part 1
-   - [ ] step 2: submit for part 2
+Overall, this approach makes the project not just a storing repo but a platform that facilitates effective participation and solution commits for each challenge.
 
 
 ## ⏯️ How to run 
 Navigating through the folders using CLI was enhanced.  
 We can provide an argument to the CLI corresponding to the challenge to check
 
+### Authentication Presetup
+- Connect to Advent of Code
+- Gets the application cookie
+	- open Inspector > tab Application > Cookie > select the value of cookie for your session
+Copy the environment file `.env.example` to `.env`
 https://github.com/user-attachments/assets/74ff6fcc-a654-445d-abda-93cfa19b42ec
 
-1. By default - it will run today's code
+### Running the code 
+Different options are available using the specific commands
+- `pnpm run-challenge` with an optional date argument
+- `pnpm dev` 
+
+#### Behaviors
+1. By default - it will generate and/or run today's code
 	```sh
 	pnpm run-challenge
 	```
@@ -56,7 +50,7 @@ based on `current year` and command input
 When specifying the year after the command, 
 it will retrieve the corresponding file to execute,  
 based on `current day` and command input  
-- year format must be 4 digits `YYYY`  
+- year format **must** be 4 digits `YYYY`  
 	```sh
 	pnpm run-challenge 2024
 	# Will execute ./2024/day-01 challenge
@@ -78,11 +72,32 @@ only based on your input
 	# or
 	pnpm run-challenge 1/2024
 
-	# Will execute ./2024/day-01 challenge
+	# Will execute ./2024/day-01 challenge folder code
 
 	```
 
+
+
+## 🚀 Embarked features
+- [x] CLI Challenge Navigation:  
+      Run any challenge for any year or day directly from the command line,
+	  reducing the effort to locate and execute solution files.
+	  ```pnpm run-challenge 2022/01```
+- [x] Automated File Generation:   
+     Automatically create and populate challenge folders with template files (README.md, index.js, services.js, input.txt) when launching a challenge, ensuring a consistent starting point with minimal manual setup.”
+  - `README.md` content - AoD x Day challenge content fetched and parsed
+  - `input.txt` content - AoD x Day data input content fetched
+  - `index.js` content - a TODO log
+  - `services.js`  content - template code
+  NB: `<DATE>` handles different formats Ex: [ `<YYYY>/<DD>`, `<YYYY>-<DD>` ]
+  ```pnpm run-challenge```
+  ```pnpm run-challenge <DATE>```
+- [x] Template-Based File Enhancements
+Utilize standardized templates for key files (such as index.js and services.js) to reduce duplication and enforce a uniform structure across all challenges.
+
+
 ## 💻 Challenges
+
 
 
 <details>
@@ -308,7 +323,7 @@ Only the four highlighted sections are real `mul` instructions. Adding up the re
 
 Scan the corrupted memory for uncorrupted `mul` instructions. *What do you get if you add up all of the results of the multiplications?*
 
-
+```
 
 
 </details>
