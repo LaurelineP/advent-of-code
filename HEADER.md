@@ -19,9 +19,20 @@ Overall, this approach makes the project not just a storing repo but a platform 
 Navigating through the folders using CLI was enhanced.  
 We can provide an argument to the CLI corresponding to the challenge to check
 
+### Authentication Presetup
+- Connect to Advent of Code
+- Gets the application cookie
+	- open Inspector > tab Application > Cookie > select the value of cookie for your session
+Copy the environment file `.env.example` to `.env`
 https://github.com/user-attachments/assets/74ff6fcc-a654-445d-abda-93cfa19b42ec
 
-1. By default - it will run today's code
+### Running the code 
+Different options are available using the specific commands
+- `pnpm run-challenge` with an optional date argument
+- `pnpm dev` 
+
+#### Behaviors
+1. By default - it will generate and/or run today's code
 	```sh
 	pnpm run-challenge
 	```
@@ -39,7 +50,7 @@ based on `current year` and command input
 When specifying the year after the command, 
 it will retrieve the corresponding file to execute,  
 based on `current day` and command input  
-- year format must be 4 digits `YYYY`  
+- year format **must** be 4 digits `YYYY`  
 	```sh
 	pnpm run-challenge 2024
 	# Will execute ./2024/day-01 challenge
@@ -61,7 +72,7 @@ only based on your input
 	# or
 	pnpm run-challenge 1/2024
 
-	# Will execute ./2024/day-01 challenge
+	# Will execute ./2024/day-01 challenge folder code
 
 	```
 

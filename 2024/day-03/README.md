@@ -20,4 +20,4 @@ Only the four highlighted sections are real `mul` instructions. Adding up the re
 
 Scan the corrupted memory for uncorrupted `mul` instructions. *What do you get if you add up all of the results of the multiplications?*
 
-
+```
