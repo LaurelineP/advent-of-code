@@ -1,25 +1,22 @@
 
-const fs 				= require('node:fs/promises')
+import fs 				from 'node:fs/promises'
 
-const { watchError } 	= require('./tools')
+import { watchError } 	from './tools'
+import { doesPathExist } from './utils'
 
-const { doesPathExist } = require('./utils')
-
-const {
+import {
 	sliceYearPathFromPath, 
 	getTodayEndpoint,
 	getTodayInputEndpoint
-} = require('./helpers')
-
-const {
-	TEMPLATE_SEPARATOR,
-} = require('./constants')
+} from './helpers'
+import { TEMPLATE_SEPARATOR, } from './constants'
+import type { Path } from 'typescript'
 
 /* -------------------------------------------------------------------------- */
 /*                                     AOC                                    */
 /* -------------------------------------------------------------------------- */
 /** Gets AoC HTML content challenge description in MD */
-const getTodayAoCChallenge = async (year, day) => {
+const getTodayAoCChallenge = async (year: string, day: string) : Promise<{challengeContent: string, inputContent: string }> => {
 	try {
 	
 		// Gets HTML AoC content
@@ -48,9 +45,13 @@ const getTodayAoCChallenge = async (year, day) => {
 		const inputContent = await response.text()
 
 		return { challengeContent, inputContent }
-	} catch( error ){
-		watchError( error )
-		console.error( error )
+	} catch( error: unknown ){
+		if (error instanceof Error) {
+            console.error(error.message)
+        } else {
+            console.error(error)
+        }
+        throw error
 	}
 
 }
@@ -61,7 +62,7 @@ const getTodayAoCChallenge = async (year, day) => {
 /* -------------------------------------------------------------------------- */
 
 /** Create folder path recursively ( parents folders if necessary ) */
-const createChallengeFolder = async generatedPath => {
+const createChallengeFolder = async (generatedPath: string | Path) => {
 	try {
 		await fs.mkdir( generatedPath, { recursive: true } )
 	} catch( error ){
@@ -76,33 +77,54 @@ const createChallengeFolder = async generatedPath => {
 /** Get's local template.txt and parses it to return contents:
 	@returns string | undefined
  */
-const getTemplateContents = async () => {
+const getTemplateContents = async (): Promise<Record<string, string> >=> {
 
 	const TEMPLATES_PATH = `${ __dirname }/templates.txt`
 
 	try {
-		let contents = await fs.readFile( TEMPLATES_PATH, 'utf-8' )
-			contents = contents.split(TEMPLATE_SEPARATOR).reduce((acc, _content) => {
-			const fileDestination = _content
-				.match(/\/\/\s*(.+?)\.js/)[0]
-				.replaceAll(/\/|\s|\.js/g, '')
+		const textContent = await fs.readFile( TEMPLATES_PATH, 'utf-8' )
+		const splitTexts = textContent.split(TEMPLATE_SEPARATOR)
+		if (!splitTexts.length) throw new Error("File code missing")
 
-				acc[ fileDestination ] = _content.replace(/\/\/\s*(.+?)\.js/, '').trim()
+		const textPerFile = splitTexts
+			.reduce((acc, text: string) => {
+				// File name with its extension
+				const fileIndicatorPtrn = /^\n?\/{2}\s?\w+\.[j|t]s/
+				
+				const matched = text.match(fileIndicatorPtrn)
+				if (!matched) {
+					console.error("File indicator not found in text:", text)
+					return acc
+				}
+
+				// const fileDestination = matched[0].replaceAll(/(\/{2}|\.[j|t]s)/g, "").trim()
+				const fileDestination = matched[0].replaceAll("//", "").trim()
+
+
+				// File code content
+				const fileContent = text.replace(fileIndicatorPtrn, '').trim()
+			
+
+				acc[ fileDestination ] = fileContent
 				return acc
-		}, {})
-		return contents
-	} catch( error ){
-		watchError( error )
+			}, {})
+		return textPerFile
+	} catch( error: unknown ){
+		if (error instanceof Error) {
+            console.error(error.message)
+			watchError( error )
+        }
+		return {}
 	}
 }
 /**
  * Creates all necessary folders / files to be ready to start developing
  *  - folder for x year if necessary
  * 	- folder for x day if necessary
- *  - file index.js
+ *  - file index.ts
  *  - file README.md
  */
-const setupChallengeFolder = async folderDayPath => {
+const setupChallengeFolder = async (folderDayPath: string) => {
 	const folderYearPath = sliceYearPathFromPath( folderDayPath )
 
 	const day = folderDayPath.slice( -2 )
@@ -110,12 +132,22 @@ const setupChallengeFolder = async folderDayPath => {
 	try {
 		const doesExist = await doesPathExist( folderYearPath )
 		if( doesExist ){
-		
-			let { index, services } = await getTemplateContents()
-			index = `console.info('TODO: Day ${ day }')\n${index}`
-			
-			await fs.writeFile(`${ folderDayPath }/index.js`, index )
-			await fs.writeFile(`${ folderDayPath }/services.js`, services )
+
+			let contentPerFile = await getTemplateContents()
+
+			const files = Object.keys(contentPerFile)
+			if(!files.length) throw new Error("Missing content to generate current day files.")
+
+
+			for( let file of files ){
+				let content = contentPerFile[file]
+				if( !content ) break
+				if( file.includes('index') ){
+					content = `console.info('TODO: Day ${ day }')\n${content}`
+				}
+				await fs.writeFile(`${ folderDayPath }/${ file }`, content )
+			}
+
 			await fs.writeFile(`${ folderDayPath }/README.md`, '')
 			await fs.writeFile(`${ folderDayPath }/input.txt`, '')
 		}
@@ -126,14 +158,14 @@ const setupChallengeFolder = async folderDayPath => {
 	return {
 		folderDay	: folderDayPath,
 		readmeFile	: `${ folderDayPath }/README.md`,
-		jsFile		: `${ folderDayPath }/index.js`,
+		jsFile		: `${ folderDayPath }/index.ts`,
 		inputFile	: `${ folderDayPath }/input.txt`
 	}
 }
 
 
 
-module.exports = {
+export {
 	createChallengeFolder,
 	getTodayAoCChallenge,
 	setupChallengeFolder

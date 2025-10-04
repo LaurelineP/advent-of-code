@@ -1,10 +1,10 @@
-const { readFile } = require('node:fs/promises');
-const { useInputPath } = require('../../utils');
+import { readFile }  from 'node:fs/promises';
+import { useInputPath }  from '../../utils';
 
  const INPUT_FILE = useInputPath(__dirname)
 
 
-const formatInputData = data => {
+const formatInputData = (data: unknown) => {
 	const splittedLines = data
 		// 1. gets lines
 		.split(/\n/g)
@@ -37,6 +37,6 @@ async function getInputData (){
 
 
 
-module.exports = {
+export {
 	getInputData
 }

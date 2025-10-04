@@ -1,13 +1,11 @@
-const { getInputData, handleData } = require('./services')
-const { logValue } = require('../../core/tools')
+import { getInputData, handleData }  from './services'
+import { logValue }  from '../../core/tools'
 
 
-const getCtxName = args => args.callee.name
-const runPartOne = function( data ) {
+const runPartOne = (data: any) => {
 	console.info('\n1. Eval multiplications & Summed result')
 
-	const thisCtx = getCtxName(arguments) // => name = runPartOne
-	let result = handleData(data, thisCtx)
+	let result = handleData(data, 'runPartOne')
 	if( !result ){
 		console.warn('Couldn\'t compute a result')
 	}
@@ -15,12 +13,12 @@ const runPartOne = function( data ) {
 
 }
 
-const runPartTwo = function (data) {
+const runPartTwo = (data: any) => {
 	// WIP
 	console.info('\n2. Eval and Summed filtered out `don\'t()` remaining values')
 	
-	const thisCtx = getCtxName(arguments) // => name = runPartTwo
-	const result = handleData(data, thisCtx)
+
+	const result = handleData(data, 'runPartTwo')
 	if( !result ){
 		console.warn('Couldn\'t compute a result')
 		return

@@ -9,15 +9,15 @@
  * - are bound to logic business
  */
 
-const { getRootDir, formatDay } = require('./utils')
+import { getRootDir, formatDay } from './utils'
 
-const {
+import {
 	CURRENT_YEAR,
 	CURRENT_DAY,
 	AOC_URL,
 	DATE_SEGMENT_LENGTH,
 	DAY_SEGMENT_LENGTH
-} = require('./constants')
+} from './constants'
 
 /* -------------------------------------------------------------------------- */
 /*                            AOC ENDPOINTS RELATED                           */
@@ -90,7 +90,7 @@ const getGeneratedPath = argValue => {
 	return pathToExecute
 }
 
-module.exports = {
+export {
 	getTodayEndpoint,
 	getTodayInputEndpoint,
 	getGeneratedPath,

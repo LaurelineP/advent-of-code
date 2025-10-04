@@ -1,6 +1,5 @@
-
-const { readFile } = require('node:fs/promises')
-const { useInputPath } = require('../../utils')
+import { readFile } from "fs/promises"
+import { useInputPath } from "../../utils"
 
 const INPUT_FILE = useInputPath( __dirname )
 
@@ -84,7 +83,7 @@ const getInputData = async () => {
 
 
 
-module.exports = {
+export {
 	getInputData,
 	isDeltaIncluded,
 	isSaveRow,
