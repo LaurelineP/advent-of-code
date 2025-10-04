@@ -7,7 +7,7 @@ The project transforms a simple repository into an integrated, developer-friendl
 All instructions and challenge details from the Advent Of Code website are maintained in one place (the README), reducing the need to switch contexts during development.
 
 - **Automates Daily Challenge Setup**:
-The project abstracts the manual process of creating folders and files (like index.js, services.js, and input files) by automating their generation when launching a challenge.
+The project abstracts the manual process of creating folders and files (like index.ts, services.ts, and input files) by automating their generation when launching a challenge.
 
 - **Enhances Developer Workflow**:
 By automating file creation and challenge launch through CLI commands, developers can focus on solving the problems rather than on repetitive setup tasks.
@@ -84,16 +84,16 @@ only based on your input
 	  reducing the effort to locate and execute solution files.
 	  ```bun run-challenge 2022/01```
 - [x] Automated File Generation:   
-     Automatically create and populate challenge folders with template files (README.md, index.js, services.js, input.txt) when launching a challenge, ensuring a consistent starting point with minimal manual setup.”
+     Automatically create and populate challenge folders with template files (README.md, index.ts, services.ts, input.txt) when launching a challenge, ensuring a consistent starting point with minimal manual setup.”
   - `README.md` content - AoD x Day challenge content fetched and parsed
   - `input.txt` content - AoD x Day data input content fetched
-  - `index.js` content - a TODO log
-  - `services.js`  content - template code
+  - `index.ts` content - a TODO log
+  - `services.ts`  content - template code
   NB: `<DATE>` handles different formats Ex: [ `<YYYY>/<DD>`, `<YYYY>-<DD>` ]
   ```bun run-challenge```
   ```bun run-challenge <DATE>```
 - [x] Template-Based File Enhancements
-Utilize standardized templates for key files (such as index.js and services.js) to reduce duplication and enforce a uniform structure across all challenges.
+Utilize standardized templates for key files (such as index.ts and services.ts) to reduce duplication and enforce a uniform structure across all challenges.
 
 
 ## 💻 Challenges
