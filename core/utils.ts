@@ -16,7 +16,7 @@ const doesPathExist = async (fileOrFolderPath: string) => {
 		const pathStats = await fs.stat( fileOrFolderPath )
 		return !!pathStats
 	} catch( error ){
-		if( error.code === 'ENOENT' ){
+		if( error?.code === 'ENOENT' ){
 			return false
 		}
 		watchError( error )

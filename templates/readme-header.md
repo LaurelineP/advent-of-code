@@ -1,4 +1,5 @@
 # 🎄 Advent Of Code 🎄 
+![Generated Readme](https://github.com/LaurelineP/advent-of-code/actions/workflows/generate-readme.yml/badge.svg)
 
 > [ Advent Of Code Website ](https://adventofcode.com)
 The project transforms a simple repository into an integrated, developer-friendly environment by centralizing instructions and automating key workflows. It:
@@ -94,6 +95,3 @@ only based on your input
   ```bun run-challenge <DATE>```
 - [x] Template-Based File Enhancements
 Utilize standardized templates for key files (such as index.ts and services.ts) to reduce duplication and enforce a uniform structure across all challenges.
-
-
-## 💻 Challenges

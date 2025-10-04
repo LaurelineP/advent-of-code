@@ -1,24 +1,24 @@
  import { getInputData } from './services'
- import { logValue } from '../../core/tools'
+ import { logValue, watchError } from '../../core/tools'
 
-const runPartOne = ( leftColumnEntries: [number|string], rightColumnEntries: [number|string] ) => {
-	console.log("run one")
-	console.log('leftColumnEntries:', leftColumnEntries[0], typeof leftColumnEntries[0] )
+const runPartOne = ( leftColumnEntries: number[], rightColumnEntries: number[] ) => {
 	// Calculates total delta
 	let total = 0
 	for( let i = 0; i < leftColumnEntries.length; i++ ){
-		total += Math.abs(leftColumnEntries[i] - rightColumnEntries[i])
+		const a = leftColumnEntries[i] || 0
+		const b = rightColumnEntries[i] || 0
+		total += Math.abs(a - b)
 	}
 	console.info('\n1. Summed deltas')
 	logValue({ total })
 }
 
 
-const runPartTwo = ( leftColumnEntries: number[], rightColumnEntries: [number|string] ) => {
+const runPartTwo = ( leftColumnEntries: number[], rightColumnEntries: number[] ) => {
 	let totalSimilarities = 0
 	const rightColumnString = rightColumnEntries.join(' ');
 	for( let leftValue of leftColumnEntries ){
-		const pattern = new RegExp(leftValue, 'g')
+		const pattern = new RegExp(`${leftValue}`, 'g')
 		const count = rightColumnString.match(pattern)?.length
 		count && (totalSimilarities += count * leftValue)
 	}
@@ -31,17 +31,19 @@ const runPartTwo = ( leftColumnEntries: number[], rightColumnEntries: [number|st
 const runSolutions = async () => {
 	try {
 		let leftAndRightValues = await getInputData()
-
-
+		if (!leftAndRightValues?.[0].length || !leftAndRightValues?.[1].length ){
+			throw new Error( '[ RUN CURRENT DAY ] Values are un-reachable')
+		}
 		// Sorts both columns
-		leftAndRightValues = leftAndRightValues
-			.map( (sideColumn: number[]) => sideColumn.sort((a, b) => a - b) as [number|string])
+		leftAndRightValues = leftAndRightValues.map((sideColumn: number[]) =>
+			sideColumn.sort((a, b) => a - b)
+		) as [number[], number[]];
 		
 		runPartOne( ...leftAndRightValues )
 		runPartTwo( ...leftAndRightValues )
 
 	} catch( error ){
-		watchError(error)
+		watchError(error as Error)
 		console.error(error)
 	}
 	// return "BLA"

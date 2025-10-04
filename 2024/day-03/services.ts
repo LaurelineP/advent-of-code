@@ -14,10 +14,8 @@ const getMatchAllValue = (matchAllResult: any) => matchAllResult[ 0 ]
 
 /** Format number string to number typed  */
 const formatItemValuesToNumber = (itemValuesStr: any) => {
-	return [ ...itemValuesStr.matchAll(/\d+/g) ]
-		.map(
-			getMatchAllValue.bind.call(Number)
-		)
+    return [...itemValuesStr.matchAll(/\d+/g)]
+        .map(match => Number(match[0]))
 }
 
 /** Parses string to get specific multiply operation => e.g.: mul(<n,><n>) */
@@ -26,7 +24,7 @@ const parseMultiplyPattern = (data: any) => {
 }
 
 /** Reduce callback summing all resulted outputs  */
-const reduceToSum = (total, values) => total += Math.imul(...values)
+const reduceToSum = (total: number, values: [number, number]) => total += Math.imul(...values)
 
 
 /* -------------------------------------------------------------------------- */
@@ -43,7 +41,7 @@ const parseAndSumPartOne = (data: any) => {
 		.map( formatItemValuesToNumber )
 
 		// multiplies tuples of numbers together
-		.map( numbers => Math.imul( ...numbers ))
+		.map( numbers => Math.imul( ...numbers as [number, number] ))
 
 		// sums values
 		.reduce(( total, value ) => total += value, 0)
@@ -56,7 +54,7 @@ const parseAndSumPartOne = (data: any) => {
 const parseAndSumPartTwo = (data: any) => {
 	// initially had 63 results
 	return data.split( DONT_MULTIPLY_PATTERN )
-		.flatMap(( x, idx )=> {
+		.flatMap(( x: string, idx: number )=> {
 			return idx === 0
 			// any beginning with closing "do()" or "don't()"
 			? [...x.matchAll(/.+?do(n't)?\(\)/g)] 
@@ -102,7 +100,7 @@ const dataHandlerController = {
  */
 const handleData = ( data: any, ctxName: string ) => {
 
-	const part = ctxName.match(/one|two/i)?.[0]?.toLowerCase()
+	const part = ctxName.match(/one|two/i)?.[0]?.toLowerCase() as 'one' | 'two'
 	return dataHandlerController?.[ part ]?.( data )
 }
 

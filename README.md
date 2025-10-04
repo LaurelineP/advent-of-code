@@ -1,4 +1,5 @@
 # 🎄 Advent Of Code 🎄 
+![Generated Readme](https://github.com/LaurelineP/advent-of-code/actions/workflows/generate-readme.yml/badge.svg)
 
 > [ Advent Of Code Website ](https://adventofcode.com)
 The project transforms a simple repository into an integrated, developer-friendly environment by centralizing instructions and automating key workflows. It:

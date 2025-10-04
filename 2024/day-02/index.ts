@@ -11,7 +11,7 @@ const runPartOne = (data: any) => {
         totalSaved += savedCount
 
         // Edge cases are those rows that did not pass the isSaveRow check
-        edgeCases = data.filter((_, idx: number) => !areSafeRows[idx])
+        edgeCases = data.filter((_: any, idx: number) => !areSafeRows[idx])
 
         console.info('\n1. Safe reports count')
         logValue({ savedCount })
@@ -33,7 +33,7 @@ const runSolutions = async () => {
         runPartOne(data)
         runPartTwo(edgeCases)
     } catch (error) {
-        watchError(error.message)
+        watchError(error as Error)
         console.error(error)
     }
 }

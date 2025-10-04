@@ -1,5 +1,6 @@
 
 import fs 				from 'node:fs/promises'
+import path 				from 'node:path'
 
 import { watchError } 	from './tools'
 import { doesPathExist } from './utils'
@@ -9,6 +10,7 @@ import {
 	getTodayEndpoint,
 	getTodayInputEndpoint
 } from './helpers'
+
 import { TEMPLATE_SEPARATOR, } from './constants'
 import type { Path } from 'typescript'
 
@@ -79,7 +81,7 @@ const createChallengeFolder = async (generatedPath: string | Path) => {
  */
 const getTemplateContents = async (): Promise<Record<string, string> >=> {
 
-	const TEMPLATES_PATH = `${ __dirname }/templates.txt`
+	const TEMPLATES_PATH = path.resolve(__dirname, '..', 'templates', 'prep-challenge-templates.txt');
 
 	try {
 		const textContent = await fs.readFile( TEMPLATES_PATH, 'utf-8' )
@@ -87,7 +89,7 @@ const getTemplateContents = async (): Promise<Record<string, string> >=> {
 		if (!splitTexts.length) throw new Error("File code missing")
 
 		const textPerFile = splitTexts
-			.reduce((acc, text: string) => {
+			.reduce<Record<string,string>>((acc, text: string) => {
 				// File name with its extension
 				const fileIndicatorPtrn = /^\n?\/{2}\s?\w+\.[j|t]s/
 				
@@ -152,7 +154,7 @@ const setupChallengeFolder = async (folderDayPath: string) => {
 			await fs.writeFile(`${ folderDayPath }/input.txt`, '')
 		}
 	} catch( error ){
-		watchError( error.message )
+		watchError( error as Error )
 		console.error( error )
 	}
 	return {

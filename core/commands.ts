@@ -23,11 +23,21 @@ import {
 export const executeChallenge = async () => {
 	const argValue 		= process.argv[ 2 ] || null
 
-	// Resolves date
-	const challengeFolderPath = getGeneratedPath( argValue )
+	const currentDate = new Date()
+	const isDecember = currentDate.getMonth() + 1 === 10
 
+	// Resolves date
+	const challengeFolderPath = getGeneratedPath( argValue || '' )
 
 	const [ year, day ] = extractYearAndDayFromPath( challengeFolderPath )
+	if( !year || !day ){ throw new Error("Missing year and day")}
+
+	// if( isDecember ) {
+	// 	console.info("ℹ️ Advent of Code challenge are only available in December.")
+	// 	console.info("ℹ️ Try to run the navigation mode by providing the year and day of December you want to check.")
+	// 	process.exit(0)
+	// }
+	
 	const headerMessage = `=============== 📌 Day ${ day } - AoC ${ year } ===============`
 	// Executes challenge or Create the challenge folder and its content
 	try {
@@ -78,10 +88,9 @@ export const executeChallenge = async () => {
 			const createdFolder = './' + challengeFolderPath.split( APP_NAME + '/' )[1]
 			console.info(`\n✅ Challenge folder created!\n   ▶️ 🗂️  ${createdFolder}`)
 			console.info(`\n\n\n\n\n🚀 Running the challenge script...\n   Code ready for changes:\n   ▶️ 🗂️  ${createdFolder}/index.ts \n`)
-			const result = await executeChallenge()
-			return result;
+			await executeChallenge()
 		}
 	} catch( error ) {
-		watchError( error )
+		watchError( error as Error )
 	}
 }
