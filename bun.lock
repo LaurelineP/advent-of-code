@@ -2,9 +2,10 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "AdventOfCode",
+      "name": "advent-of-code",
       "devDependencies": {
         "@types/bun": "latest",
+        "@types/node": "^24.6.2",
       },
       "peerDependencies": {
         "typescript": "^5",

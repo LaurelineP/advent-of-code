@@ -1,10 +1,10 @@
-const fs = require('node:fs/promises');
-const path = require('node:path');
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 const rootPath 			= path.resolve('./');
 // const yearFolderPath 	= path.resolve('./')
 
-const checkFileExists = async filePath => {
+const checkFileExists = async (filePath: string) => {
 	try {
 		await fs.access( filePath, fs.constants.F_OK);
 		return true
@@ -16,14 +16,11 @@ const checkFileExists = async filePath => {
 
 const dirNameDeepNestedPattern = new RegExp(/(^\d+)\/(day-\d+)\/(README\.md)$/); // 2024/day-01/README.md
 const dirNamePattern = new RegExp(/(^\d+)\/(README\.md)$/); // 2024/README.md
-const getReadmeFilePaths = async( rootPath, dirNamePattern ) => {
+const getReadmeFilePaths = async( rootPath:string, dirNamePattern: RegExp ) => {
 	try {
 		const readmeFiles = await fs
 			.readdir(rootPath, { recursive: true })
-			.then( filesAndFolders => {
-				console.log('filesAndFolders:', filesAndFolders)
-				return filesAndFolders.filter( x => dirNamePattern.test( x ))
-			})
+			.then( filesAndFolders => filesAndFolders.filter( x => dirNamePattern.test( x )))
 		return readmeFiles;
 
 		
@@ -33,7 +30,7 @@ const getReadmeFilePaths = async( rootPath, dirNamePattern ) => {
 	}
 }
 
-const formatFolderRelPathTitle = filePath => {
+const formatFolderRelPathTitle = (filePath:string) => {
 	const truncFilePath = filePath.split('/').slice(0,2).join(', ');
 	const parsed = truncFilePath
 		.replaceAll(/[-_]/g, ' ')
@@ -41,7 +38,7 @@ const formatFolderRelPathTitle = filePath => {
 	return parsed.toUpperCase()
 }
 
-const getReadmeContents = async ( filePaths ) => {
+const getReadmeContents = async ( filePaths: string[] ) => {
 	try {
 		const fileContentsPromises =  filePaths.map( async f => {
 			return {
@@ -57,7 +54,7 @@ const getReadmeContents = async ( filePaths ) => {
 	}
 }
 
-const writeToRootReadme = async( readmeFilePath, contentDetails )=> {
+const writeToRootReadme = async( readmeFilePath: string, contentDetails )=> {
 	try {
 		for ( let contentDetailsItem of contentDetails ){
 			const title = `📌 ${ contentDetailsItem.folderNameFormatted }`;
@@ -76,7 +73,7 @@ const writeToRootReadme = async( readmeFilePath, contentDetails )=> {
 	}
 }
 
-const generateReadme = async ( basePath, readmePathPattern ) => {
+const generateReadme = async ( basePath: string , readmePathPattern: RegExp ) => {
 	const README_PATH 			= `${ basePath }/README.md`;
 	const README_HEADER_PATH 	= `${ basePath }/HEADER.md`;
 

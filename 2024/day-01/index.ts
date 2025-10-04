@@ -1,22 +1,23 @@
- const { getInputData } = require('./services')
- const { logValue } = require('../../core/tools')
+ import { getInputData } from './services'
+ import { logValue } from '../../core/tools'
 
-
-const runPartOne = ( leftColumn, rightColumn ) => {
+const runPartOne = ( leftColumnEntries: [number|string], rightColumnEntries: [number|string] ) => {
+	console.log("run one")
+	console.log('leftColumnEntries:', leftColumnEntries[0], typeof leftColumnEntries[0] )
 	// Calculates total delta
 	let total = 0
-	for( let i = 0; i < leftColumn.length; i++ ){
-		total += Math.abs(leftColumn[i] - rightColumn[i])
+	for( let i = 0; i < leftColumnEntries.length; i++ ){
+		total += Math.abs(leftColumnEntries[i] - rightColumnEntries[i])
 	}
 	console.info('\n1. Summed deltas')
 	logValue({ total })
 }
 
 
-const runPartTwo = ( leftColumn, rightColumn ) => {
+const runPartTwo = ( leftColumnEntries: number[], rightColumnEntries: [number|string] ) => {
 	let totalSimilarities = 0
-	const rightColumnString = rightColumn.join(' ');
-	for( let leftValue of leftColumn ){
+	const rightColumnString = rightColumnEntries.join(' ');
+	for( let leftValue of leftColumnEntries ){
 		const pattern = new RegExp(leftValue, 'g')
 		const count = rightColumnString.match(pattern)?.length
 		count && (totalSimilarities += count * leftValue)
@@ -29,12 +30,13 @@ const runPartTwo = ( leftColumn, rightColumn ) => {
 
 const runSolutions = async () => {
 	try {
-		const leftAndRightValues = await getInputData()
+		let leftAndRightValues = await getInputData()
+
 
 		// Sorts both columns
-		leftAndRightValues
-			.map( sideColumn => sideColumn.sort((a, b) => a - b))
-
+		leftAndRightValues = leftAndRightValues
+			.map( (sideColumn: number[]) => sideColumn.sort((a, b) => a - b) as [number|string])
+		
 		runPartOne( ...leftAndRightValues )
 		runPartTwo( ...leftAndRightValues )
 
@@ -42,6 +44,7 @@ const runSolutions = async () => {
 		watchError(error)
 		console.error(error)
 	}
+	// return "BLA"
 	/** Returns
 		=============== 📌 Day 01 - AoC 2024 =============== 
 		1. Summed deltas
@@ -59,4 +62,4 @@ const runSolutions = async () => {
 		└─────────┴───────────────────┘
 	 */
 }
-runSolutions()
+await runSolutions()

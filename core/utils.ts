@@ -4,14 +4,14 @@
 /* -------------------------------------------------------------------------- */
 /* Agnostics functions to use within the project in any file */
 
-const fs = require('node:fs/promises')
-const path = require('node:path')
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
-const { watchError } = require('./tools')
+import { watchError } from './tools'
 
-const getRootDir = dirnamePath => path.resolve( dirnamePath, '..' )
+const getRootDir = (dirnamePath: string) => path.resolve( dirnamePath, '..' )
 
-const doesPathExist = async fileOrFolderPath => {
+const doesPathExist = async (fileOrFolderPath: string) => {
 	try {
 		const pathStats = await fs.stat( fileOrFolderPath )
 		return !!pathStats
@@ -27,11 +27,11 @@ const doesPathExist = async fileOrFolderPath => {
 
 /* ----------------------------- DATE FORMATTING ---------------------------- */
 
-const formatDay = (value) => Number(value) > 9
+const formatDay = (value: string|number) => Number(value) > 9
 	? Number(value)
 	: `${ Number(value) }`.padStart(2,'0')
 
-module.exports = {
+export {
 	getRootDir,
 	doesPathExist,
 	formatDay,

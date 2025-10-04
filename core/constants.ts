@@ -1,4 +1,4 @@
-const { formatDay } = require('./utils')
+import { formatDay } from './utils'
 
 
 
@@ -28,7 +28,7 @@ const DAY_SEGMENT_LENGTH = '/day-DD'.length
 const AOC_URL = `https://adventofcode.com`
 
 
-module.exports = {
+export {
 	APP_NAME,
 	CURRENT_DATE,
 	CURRENT_YEAR,
