@@ -4,8 +4,13 @@
   "type": "module",
   "private": true,
   "devDependencies": {
+    "@eslint/js": "^9.37.0",
     "@types/bun": "latest",
-    "@types/node": "^24.6.2"
+    "@types/node": "^24.6.2",
+    "eslint": "^9.37.0",
+    "globals": "^16.4.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.45.0"
   },
   "scripts": {
     "run-challenge": "bun --reload --watch --env-file=.env ./index.ts",
