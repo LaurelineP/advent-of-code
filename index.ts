@@ -1,4 +1,3 @@
+import { executeChallenge } from "./core/commands";
 
-import { executeChallenge } from './core/commands'
-
-executeChallenge()
+executeChallenge();

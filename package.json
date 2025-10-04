@@ -1,22 +1,25 @@
 {
-  "name": "advent-of-code",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "@types/bun": "latest",
-    "@types/node": "^24.6.2",
-    "eslint": "^9.37.0",
-    "globals": "^16.4.0",
-    "jiti": "^2.6.1",
-    "typescript-eslint": "^8.45.0"
-  },
-  "scripts": {
-    "run-challenge": "bun --reload --watch --env-file=.env ./index.ts",
-    "dev": "bun run-challenge"
-  },
-  "peerDependencies": {
-    "typescript": "^5.9.3"
-  }
+    "name": "advent-of-code",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "devDependencies": {
+        "@eslint/js": "^9.37.0",
+        "@types/bun": "latest",
+        "@types/node": "^24.6.2",
+        "eslint": "^9.37.0",
+        "globals": "^16.4.0",
+        "jiti": "^2.6.1",
+        "prettier": "3.6.2",
+        "typescript-eslint": "^8.45.0"
+    },
+    "scripts": {
+        "run-challenge": "bun --reload --watch --env-file=.env ./index.ts",
+        "dev": "bun run-challenge",
+        "lint": "bun run eslint",
+        "format": "bunx prettier . --write"
+    },
+    "peerDependencies": {
+        "typescript": "^5.9.3"
+    }
 }
