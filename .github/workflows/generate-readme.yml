@@ -20,10 +20,8 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: 'Uses Node'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - name: 'Uses Bun'
+        uses: oven-sh/setup-bun@v2
 
       - name: "Configure Git for github-actions"
         run: |
@@ -32,7 +30,7 @@ jobs:
 
       - name: Run Readme script generator
         run: |
-          node ./scripts/generate-readme.js
+          bun run ./scripts/generate-readme.ts
           git add README.md
           git commit -m "(CI) README updated"
           git push

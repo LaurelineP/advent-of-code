@@ -327,3 +327,11 @@ Scan the corrupted memory for uncorrupted `mul` instructions. *What do you get i
 
 
 </details>
+<details>
+	<summary>📌 2025, DAY 04</summary>
+
+[✏️ Need to update this Readme Section?](./2025/day-04/README.md)
+
+# 
+
+</details>
