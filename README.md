@@ -28,13 +28,13 @@ https://github.com/user-attachments/assets/74ff6fcc-a654-445d-abda-93cfa19b42ec
 
 ### Running the code 
 Different options are available using the specific commands
-- `pnpm run-challenge` with an optional date argument
-- `pnpm dev` 
+- `bun run-challenge` with an optional date argument
+- `bun dev` 
 
 #### Behaviors
 1. By default - it will generate and/or run today's code
 	```sh
-	pnpm run-challenge
+	bun run-challenge
 	```
 
 2. By day
@@ -42,7 +42,7 @@ When specifying a day after the command,
 it will retrieve the corresponding file to execute, 
 based on `current year` and command input  
 	```sh
-	pnpm run-challenge 1
+	bun run-challenge 1
 	# Will execute ./2024/day-01 challenge
 	```
 
@@ -52,7 +52,7 @@ it will retrieve the corresponding file to execute,
 based on `current day` and command input  
 - year format **must** be 4 digits `YYYY`  
 	```sh
-	pnpm run-challenge 2024
+	bun run-challenge 2024
 	# Will execute ./2024/day-01 challenge
 
 	```
@@ -64,13 +64,13 @@ only based on your input
 - year and day should not be separated by space
 - year can be mentioned before the day and vise-versa
 	```sh
-	pnpm run-challenge 2024/01
+	bun run-challenge 2024/01
 	# or
-	pnpm run-challenge 01/2024
+	bun run-challenge 01/2024
 	# or
-	pnpm run-challenge 01/2024
+	bun run-challenge 01/2024
 	# or
-	pnpm run-challenge 1/2024
+	bun run-challenge 1/2024
 
 	# Will execute ./2024/day-01 challenge folder code
 
@@ -82,7 +82,7 @@ only based on your input
 - [x] CLI Challenge Navigation:  
       Run any challenge for any year or day directly from the command line,
 	  reducing the effort to locate and execute solution files.
-	  ```pnpm run-challenge 2022/01```
+	  ```bun run-challenge 2022/01```
 - [x] Automated File Generation:   
      Automatically create and populate challenge folders with template files (README.md, index.js, services.js, input.txt) when launching a challenge, ensuring a consistent starting point with minimal manual setup.”
   - `README.md` content - AoD x Day challenge content fetched and parsed
@@ -90,8 +90,8 @@ only based on your input
   - `index.js` content - a TODO log
   - `services.js`  content - template code
   NB: `<DATE>` handles different formats Ex: [ `<YYYY>/<DD>`, `<YYYY>-<DD>` ]
-  ```pnpm run-challenge```
-  ```pnpm run-challenge <DATE>```
+  ```bun run-challenge```
+  ```bun run-challenge <DATE>```
 - [x] Template-Based File Enhancements
 Utilize standardized templates for key files (such as index.js and services.js) to reduce duplication and enforce a uniform structure across all challenges.
 
