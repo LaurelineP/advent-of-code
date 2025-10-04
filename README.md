@@ -99,9 +99,7 @@ Utilize standardized templates for key files (such as index.ts and services.ts) 
 
 
 
-## 💻 Challenges
-
-<details>
+## 💻 Challenges<details>
 	<summary>📌 2024, DAY 01</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-01/README.md)
