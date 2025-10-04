@@ -1,13 +1,17 @@
 {
-  "name": "AdventOfCode",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "node --watch --env-file=.env ./",
-    "run-challenge": "node --env-file=.env ./"
+  "name": "advent-of-code",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^24.6.2"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "scripts": {
+    "run-challenge": "bun --reload --watch --env-file=.env ./index.ts",
+    "dev": "bun run-challenge"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
+  }
 }

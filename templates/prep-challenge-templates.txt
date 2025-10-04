@@ -1,15 +1,13 @@
-// index.js
-const { getInputData } = require('./services')
-const { logValue } = require('../../core/tools')
+// index.ts
+import { getInputData } from './services'
+import { logValue } from '../../core/tools'
 
 const runPartOne = data => {
 	console.info('\n1. <Result>')
-
 }
 
 const runPartTwo = data => {
 	console.info('\n2. <Result>')
-
 }
 
 const runSolutions = async () => {
@@ -21,9 +19,9 @@ runSolutions()
 
 
 ---
-// services.js
-const { readFile } = require('node:fs/promises')
-const { useInputPath } = require('../../utils')
+// services.ts
+import { readFile } from 'node:fs/promises'
+import { useInputPath } from '../../utils'
 
 const INPUT_FILE = useInputPath( __dirname )
 
@@ -42,6 +40,6 @@ const getInputData = async () => {
 }
 
 
-module.exports = {
+export {
 	getInputData,
 }

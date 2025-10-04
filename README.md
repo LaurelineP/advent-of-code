@@ -1,4 +1,5 @@
 # 🎄 Advent Of Code 🎄 
+![Generated Readme](https://github.com/LaurelineP/advent-of-code/actions/workflows/generate-readme.yml/badge.svg)
 
 > [ Advent Of Code Website ](https://adventofcode.com)
 The project transforms a simple repository into an integrated, developer-friendly environment by centralizing instructions and automating key workflows. It:
@@ -7,7 +8,7 @@ The project transforms a simple repository into an integrated, developer-friendl
 All instructions and challenge details from the Advent Of Code website are maintained in one place (the README), reducing the need to switch contexts during development.
 
 - **Automates Daily Challenge Setup**:
-The project abstracts the manual process of creating folders and files (like index.js, services.js, and input files) by automating their generation when launching a challenge.
+The project abstracts the manual process of creating folders and files (like index.ts, services.ts, and input files) by automating their generation when launching a challenge.
 
 - **Enhances Developer Workflow**:
 By automating file creation and challenge launch through CLI commands, developers can focus on solving the problems rather than on repetitive setup tasks.
@@ -28,13 +29,13 @@ https://github.com/user-attachments/assets/74ff6fcc-a654-445d-abda-93cfa19b42ec
 
 ### Running the code 
 Different options are available using the specific commands
-- `pnpm run-challenge` with an optional date argument
-- `pnpm dev` 
+- `bun run-challenge` with an optional date argument
+- `bun dev` 
 
 #### Behaviors
 1. By default - it will generate and/or run today's code
 	```sh
-	pnpm run-challenge
+	bun run-challenge
 	```
 
 2. By day
@@ -42,7 +43,7 @@ When specifying a day after the command,
 it will retrieve the corresponding file to execute, 
 based on `current year` and command input  
 	```sh
-	pnpm run-challenge 1
+	bun run-challenge 1
 	# Will execute ./2024/day-01 challenge
 	```
 
@@ -52,7 +53,7 @@ it will retrieve the corresponding file to execute,
 based on `current day` and command input  
 - year format **must** be 4 digits `YYYY`  
 	```sh
-	pnpm run-challenge 2024
+	bun run-challenge 2024
 	# Will execute ./2024/day-01 challenge
 
 	```
@@ -64,13 +65,13 @@ only based on your input
 - year and day should not be separated by space
 - year can be mentioned before the day and vise-versa
 	```sh
-	pnpm run-challenge 2024/01
+	bun run-challenge 2024/01
 	# or
-	pnpm run-challenge 01/2024
+	bun run-challenge 01/2024
 	# or
-	pnpm run-challenge 01/2024
+	bun run-challenge 01/2024
 	# or
-	pnpm run-challenge 1/2024
+	bun run-challenge 1/2024
 
 	# Will execute ./2024/day-01 challenge folder code
 
@@ -82,25 +83,23 @@ only based on your input
 - [x] CLI Challenge Navigation:  
       Run any challenge for any year or day directly from the command line,
 	  reducing the effort to locate and execute solution files.
-	  ```pnpm run-challenge 2022/01```
+	  ```bun run-challenge 2022/01```
 - [x] Automated File Generation:   
-     Automatically create and populate challenge folders with template files (README.md, index.js, services.js, input.txt) when launching a challenge, ensuring a consistent starting point with minimal manual setup.”
+     Automatically create and populate challenge folders with template files (README.md, index.ts, services.ts, input.txt) when launching a challenge, ensuring a consistent starting point with minimal manual setup.”
   - `README.md` content - AoD x Day challenge content fetched and parsed
   - `input.txt` content - AoD x Day data input content fetched
-  - `index.js` content - a TODO log
-  - `services.js`  content - template code
+  - `index.ts` content - a TODO log
+  - `services.ts`  content - template code
   NB: `<DATE>` handles different formats Ex: [ `<YYYY>/<DD>`, `<YYYY>-<DD>` ]
-  ```pnpm run-challenge```
-  ```pnpm run-challenge <DATE>```
+  ```bun run-challenge```
+  ```bun run-challenge <DATE>```
 - [x] Template-Based File Enhancements
-Utilize standardized templates for key files (such as index.js and services.js) to reduce duplication and enforce a uniform structure across all challenges.
-
-
-## 💻 Challenges
+Utilize standardized templates for key files (such as index.ts and services.ts) to reduce duplication and enforce a uniform structure across all challenges.
 
 
 
-<details>
+
+## 💻 Challenges<details>
 	<summary>📌 2024, DAY 01</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-01/README.md)
@@ -211,7 +210,9 @@ What is their similarity score?
 
 
 </details>
-<details>
+
+
+## 💻 Challenges<details>
 	<summary>📌 2024, DAY 02</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-02/README.md)
@@ -296,7 +297,9 @@ Thanks to the Problem Dampener, 4 reports are actually safe!
 Update your analysis by handling situations where the Problem Dampener can remove a single level from unsafe reports. How many reports are now safe?
 
 </details>
-<details>
+
+
+## 💻 Challenges<details>
 	<summary>📌 2024, DAY 03</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-03/README.md)

@@ -1,10 +1,9 @@
-const fs = require('node:fs/promises');
-const path = require('node:path');
+import fs 	from 'node:fs/promises';
+import path from 'node:path';
 
 const rootPath 			= path.resolve('./');
-// const yearFolderPath 	= path.resolve('./')
 
-const checkFileExists = async filePath => {
+const checkFileExists = async (filePath: string) => {
 	try {
 		await fs.access( filePath, fs.constants.F_OK);
 		return true
@@ -16,24 +15,20 @@ const checkFileExists = async filePath => {
 
 const dirNameDeepNestedPattern = new RegExp(/(^\d+)\/(day-\d+)\/(README\.md)$/); // 2024/day-01/README.md
 const dirNamePattern = new RegExp(/(^\d+)\/(README\.md)$/); // 2024/README.md
-const getReadmeFilePaths = async( rootPath, dirNamePattern ) => {
+const getReadmeFilePaths = async( rootPath:string, dirNamePattern: RegExp ) : Promise<string[]>=> {
 	try {
 		const readmeFiles = await fs
 			.readdir(rootPath, { recursive: true })
-			.then( filesAndFolders => {
-				console.log('filesAndFolders:', filesAndFolders)
-				return filesAndFolders.filter( x => dirNamePattern.test( x ))
-			})
+			.then( filesAndFolders => filesAndFolders.filter( x => dirNamePattern.test( x )))
 		return readmeFiles;
-
-		
 	} catch (error){
-		console.error(`[ Error ]: ${error.message || 'reading dir'}`)
+		console.error(`[ Error ]: ${(error as Error)?.message || 'reading dir'}`)
 		console.error( error )
+		throw new Error("No README.md file found")
 	}
 }
 
-const formatFolderRelPathTitle = filePath => {
+const formatFolderRelPathTitle = (filePath:string) => {
 	const truncFilePath = filePath.split('/').slice(0,2).join(', ');
 	const parsed = truncFilePath
 		.replaceAll(/[-_]/g, ' ')
@@ -41,7 +36,7 @@ const formatFolderRelPathTitle = filePath => {
 	return parsed.toUpperCase()
 }
 
-const getReadmeContents = async ( filePaths ) => {
+const getReadmeContents = async ( filePaths: string[] ) => {
 	try {
 		const fileContentsPromises =  filePaths.map( async f => {
 			return {
@@ -52,17 +47,23 @@ const getReadmeContents = async ( filePaths ) => {
 		})
 		return await Promise.all( fileContentsPromises );
 	} catch( error ){
-		console.error(`[ ERROR - getReadmeContents ]: ${error.name}`)
+		console.error(`[ ERROR - getReadmeContents ]: ${(error as Error).name}`)
 		console.error(error)
 	}
 }
 
-const writeToRootReadme = async( readmeFilePath, contentDetails )=> {
+type ContenDetails = {
+    folderRelPath: string;
+    folderNameFormatted: string;
+    content: string;
+}[]
+const writeToRootReadme = async( readmeFilePath: string, contentDetails: ContenDetails )=> {
 	try {
 		for ( let contentDetailsItem of contentDetails ){
 			const title = `📌 ${ contentDetailsItem.folderNameFormatted }`;
 			const innerReadmePath = contentDetailsItem.folderRelPath;
-			let folderRelPathOpeningTag = `<details>\n\t<summary>${title}</summary>`;
+			let folderRelPathOpeningTag = `\n\n## 💻 Challenges`
+			folderRelPathOpeningTag += `<details>\n\t<summary>${title}</summary>`;
 			folderRelPathOpeningTag += `\n\n[✏️ Need to update this Readme Section?](./${ innerReadmePath })\n`
 
 
@@ -72,13 +73,13 @@ const writeToRootReadme = async( readmeFilePath, contentDetails )=> {
 			await fs.appendFile(readmeFilePath, content )
 		}
 	} catch( error ){
-		console.error(`[ ERROR - writeToRootReadme ] : ${error.name}`)
+		console.error(`[ ERROR - writeToRootReadme ] : ${(error as Error).name}`)
 	}
 }
 
-const generateReadme = async ( basePath, readmePathPattern ) => {
+const generateReadme = async ( basePath: string , readmePathPattern: RegExp ) => {
 	const README_PATH 			= `${ basePath }/README.md`;
-	const README_HEADER_PATH 	= `${ basePath }/HEADER.md`;
+	const README_HEADER_PATH 	= `${ basePath }/templates/readme-header.md`;
 
 	console.info('Executing script for readme...')
 
@@ -88,16 +89,18 @@ const generateReadme = async ( basePath, readmePathPattern ) => {
 
 	const doesReadmeHeaderExists = await checkFileExists( README_HEADER_PATH )
 	const readmeHeader 	  = doesReadmeHeaderExists
-		&& await fs.readFile(README_HEADER_PATH, { encoding: 'UTF-8' });
+		&& await fs.readFile(README_HEADER_PATH, { encoding: 'utf-8' });
 
-	const writeFileArgs = doesReadmeHeaderExists
+
+	const writeFileArgs: [string, string] = doesReadmeHeaderExists
 		? [ README_PATH, readmeHeader + '\n\n\n']
 		: [ README_PATH, '\n'];
 
 	try {
 		// overriding content
 		await fs.writeFile( ...writeFileArgs )
-		await writeToRootReadme( README_PATH, contentsDetails )
+		console.log('contentsDetails:', contentsDetails)
+		contentsDetails && await writeToRootReadme( README_PATH, contentsDetails )
 	} catch( error ){
 		console.error( '[ ERROR - MAIN ]: failing generating readme')
 	}
@@ -106,7 +109,7 @@ const generateReadme = async ( basePath, readmePathPattern ) => {
 }
 
 
-(async( rootPath ) => {
+const main = async ( rootPath: string ) => {
 
 	/** TODO - generate a readme per folder year 
 		- generate first the year folder readme ( or create )
@@ -115,7 +118,14 @@ const generateReadme = async ( basePath, readmePathPattern ) => {
 		Objective: think ahead for other years and how big the main readme will get
 		displaying all challenge description
 	*/
+	try {
+		await generateReadme ( rootPath, dirNameDeepNestedPattern )
+	} catch( error ){
+		console.error(error)
+	}
 
-	await generateReadme ( rootPath, dirNameDeepNestedPattern )
 
-})( rootPath );
+}
+await main(rootPath)
+
+process.exit(0);

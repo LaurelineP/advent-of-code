@@ -1,32 +1,30 @@
-const { readFile } = require('node:fs/promises')
+import { readFile } from 'node:fs/promises'
 
-const {
+import {
 	INPUT_FILE,
 	MULTIPLY_PATTERN,
 	DONT_MULTIPLY_PATTERN,
-} = require('./constants')
+} from './constants'
 
 /* -------------------------------------------------------------------------- */
 /*                                    UTILS                                   */
 /* -------------------------------------------------------------------------- */
 /** Gets all matched value at position 0 from returned match */
-const getMatchAllValue = matchAllResult => matchAllResult[ 0 ]
+const getMatchAllValue = (matchAllResult: any) => matchAllResult[ 0 ]
 
 /** Format number string to number typed  */
-const formatItemValuesToNumber = itemValuesStr => {
-	return [ ...itemValuesStr.matchAll(/\d+/g) ]
-		.map(
-			getMatchAllValue.bind.call(Number)
-		)
+const formatItemValuesToNumber = (itemValuesStr: any) => {
+    return [...itemValuesStr.matchAll(/\d+/g)]
+        .map(match => Number(match[0]))
 }
 
 /** Parses string to get specific multiply operation => e.g.: mul(<n,><n>) */
-const parseMultiplyPattern = data => {
+const parseMultiplyPattern = (data: any) => {
 	return [ ...data.matchAll( MULTIPLY_PATTERN )]
 }
 
 /** Reduce callback summing all resulted outputs  */
-const reduceToSum = (total, values) => total += Math.imul(...values)
+const reduceToSum = (total: number, values: [number, number]) => total += Math.imul(...values)
 
 
 /* -------------------------------------------------------------------------- */
@@ -34,30 +32,29 @@ const reduceToSum = (total, values) => total += Math.imul(...values)
 /* -------------------------------------------------------------------------- */
 
 /** [ First case computation ] - all multiplication operations */
-const parseAndSumPartOne = data => {
+const parseAndSumPartOne = (data: any) => {
 	return parseMultiplyPattern(data)
+		// gets match group value at index 0
+		.map( getMatchAllValue )
 
-			// gets match group value at index 0
-			.map( getMatchAllValue )
+		// gets value string's numbers values as tuple
+		.map( formatItemValuesToNumber )
 
-			// gets value string's numbers values as tuple
-			.map( formatItemValuesToNumber )
+		// multiplies tuples of numbers together
+		.map( numbers => Math.imul( ...numbers as [number, number] ))
 
-			// multiplies tuples of numbers together
-			.map( numbers => Math.imul( ...numbers ))
-
-			// sums values
-			.reduce(( total, value ) => total += value, 0)
+		// sums values
+		.reduce(( total, value ) => total += value, 0)
 
 }
 
 
 /** [ Second case computation ] - only enabled multiplication operations */
 // TODO: Invalid result to fix
-const parseAndSumPartTwo = (data) => {
+const parseAndSumPartTwo = (data: any) => {
 	// initially had 63 results
 	return data.split( DONT_MULTIPLY_PATTERN )
-		.flatMap(( x, idx )=> {
+		.flatMap(( x: string, idx: number )=> {
 			return idx === 0
 			// any beginning with closing "do()" or "don't()"
 			? [...x.matchAll(/.+?do(n't)?\(\)/g)] 
@@ -101,9 +98,9 @@ const dataHandlerController = {
  * @param {*} fnFormatOption 
  * @returns 
  */
-const handleData = ( data, ctxName ) => {
+const handleData = ( data: any, ctxName: string ) => {
 
-	const part = ctxName.match(/one|two/i)?.[0]?.toLowerCase()
+	const part = ctxName.match(/one|two/i)?.[0]?.toLowerCase() as 'one' | 'two'
 	return dataHandlerController?.[ part ]?.( data )
 }
 
@@ -117,7 +114,7 @@ const getInputData = async () => {
 }
 
 
-module.exports = {
+export {
 	getInputData,
 	getMatchAllValue,
 	handleData,

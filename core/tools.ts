@@ -1,5 +1,5 @@
 /** Logs helper - for a given value, log display a table  */
-exports.logValue = value => {
+export const logValue = (value: unknown) => {
 	let logger = console.table
 	if(
 		value instanceof Object
@@ -14,7 +14,7 @@ exports.logValue = value => {
 }
 
 /** Error callback logger - logs error or logs No Error Feedback */
-exports.watchError = (err, isSilenced) => {
+export const watchError = (err: Error, isSilenced?: boolean) => {
 	if(err) {
 		let message = '\n❌ [ ERROR CAUGHT ]:';
 		console.error( message, err.message )
@@ -24,7 +24,7 @@ exports.watchError = (err, isSilenced) => {
 }
 
 /** Success callback logger - logs and returns data */
-exports.watchData = data => {
+export const watchData = (data: unknown) => {
 	if(data){
 		this.logValue({ data })
 		return data

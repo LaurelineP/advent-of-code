@@ -1,23 +1,24 @@
- const { getInputData } = require('./services')
- const { logValue } = require('../../core/tools')
+ import { getInputData } from './services'
+ import { logValue, watchError } from '../../core/tools'
 
-
-const runPartOne = ( leftColumn, rightColumn ) => {
+const runPartOne = ( leftColumnEntries: number[], rightColumnEntries: number[] ) => {
 	// Calculates total delta
 	let total = 0
-	for( let i = 0; i < leftColumn.length; i++ ){
-		total += Math.abs(leftColumn[i] - rightColumn[i])
+	for( let i = 0; i < leftColumnEntries.length; i++ ){
+		const a = leftColumnEntries[i] || 0
+		const b = rightColumnEntries[i] || 0
+		total += Math.abs(a - b)
 	}
 	console.info('\n1. Summed deltas')
 	logValue({ total })
 }
 
 
-const runPartTwo = ( leftColumn, rightColumn ) => {
+const runPartTwo = ( leftColumnEntries: number[], rightColumnEntries: number[] ) => {
 	let totalSimilarities = 0
-	const rightColumnString = rightColumn.join(' ');
-	for( let leftValue of leftColumn ){
-		const pattern = new RegExp(leftValue, 'g')
+	const rightColumnString = rightColumnEntries.join(' ');
+	for( let leftValue of leftColumnEntries ){
+		const pattern = new RegExp(`${leftValue}`, 'g')
 		const count = rightColumnString.match(pattern)?.length
 		count && (totalSimilarities += count * leftValue)
 	}
@@ -29,19 +30,23 @@ const runPartTwo = ( leftColumn, rightColumn ) => {
 
 const runSolutions = async () => {
 	try {
-		const leftAndRightValues = await getInputData()
-
+		let leftAndRightValues = await getInputData()
+		if (!leftAndRightValues?.[0].length || !leftAndRightValues?.[1].length ){
+			throw new Error( '[ RUN CURRENT DAY ] Values are un-reachable')
+		}
 		// Sorts both columns
-		leftAndRightValues
-			.map( sideColumn => sideColumn.sort((a, b) => a - b))
-
+		leftAndRightValues = leftAndRightValues.map((sideColumn: number[]) =>
+			sideColumn.sort((a, b) => a - b)
+		) as [number[], number[]];
+		
 		runPartOne( ...leftAndRightValues )
 		runPartTwo( ...leftAndRightValues )
 
 	} catch( error ){
-		watchError(error)
+		watchError(error as Error)
 		console.error(error)
 	}
+	// return "BLA"
 	/** Returns
 		=============== 📌 Day 01 - AoC 2024 =============== 
 		1. Summed deltas
@@ -59,4 +64,4 @@ const runSolutions = async () => {
 		└─────────┴───────────────────┘
 	 */
 }
-runSolutions()
+await runSolutions()
