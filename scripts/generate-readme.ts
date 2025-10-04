@@ -62,15 +62,14 @@ const writeToRootReadme = async( readmeFilePath: string, contentDetails: ContenD
 		for ( let contentDetailsItem of contentDetails ){
 			const title = `📌 ${ contentDetailsItem.folderNameFormatted }`;
 			const innerReadmePath = contentDetailsItem.folderRelPath;
-			let folderRelPathOpeningTag = `\n\n## 💻 Challenges`
-			folderRelPathOpeningTag += `<details>\n\t<summary>${title}</summary>`;
+			let folderRelPathOpeningTag = `<details>\n\t<summary>${title}</summary>`;
 			folderRelPathOpeningTag += `\n\n[✏️ Need to update this Readme Section?](./${ innerReadmePath })\n`
 
 
 			const folderRelPathClosingTag = `\n</details>\n`;
 			
 			const content = `${folderRelPathOpeningTag}\n${contentDetailsItem.content}\n${folderRelPathClosingTag}`
-			await fs.appendFile(readmeFilePath, content )
+			await fs.appendFile( readmeFilePath, content )
 		}
 	} catch( error ){
 		console.error(`[ ERROR - writeToRootReadme ] : ${(error as Error).name}`)
@@ -93,13 +92,13 @@ const generateReadme = async ( basePath: string , readmePathPattern: RegExp ) =>
 
 
 	const writeFileArgs: [string, string] = doesReadmeHeaderExists
-		? [ README_PATH, readmeHeader + '\n\n\n']
+		? [ README_PATH, readmeHeader + `\n\n## 💻 Challenges\n`]
 		: [ README_PATH, '\n'];
 
 	try {
 		// overriding content
 		await fs.writeFile( ...writeFileArgs )
-		console.log('contentsDetails:', contentsDetails)
+
 		contentsDetails && await writeToRootReadme( README_PATH, contentsDetails )
 	} catch( error ){
 		console.error( '[ ERROR - MAIN ]: failing generating readme')

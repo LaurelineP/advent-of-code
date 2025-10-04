@@ -96,10 +96,8 @@ only based on your input
 - [x] Template-Based File Enhancements
 Utilize standardized templates for key files (such as index.ts and services.ts) to reduce duplication and enforce a uniform structure across all challenges.
 
-
-
-
-## 💻 Challenges<details>
+## 💻 Challenges
+<details>
 	<summary>📌 2024, DAY 01</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-01/README.md)
@@ -210,9 +208,7 @@ What is their similarity score?
 
 
 </details>
-
-
-## 💻 Challenges<details>
+<details>
 	<summary>📌 2024, DAY 02</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-02/README.md)
@@ -297,9 +293,7 @@ Thanks to the Problem Dampener, 4 reports are actually safe!
 Update your analysis by handling situations where the Problem Dampener can remove a single level from unsafe reports. How many reports are now safe?
 
 </details>
-
-
-## 💻 Challenges<details>
+<details>
 	<summary>📌 2024, DAY 03</summary>
 
 [✏️ Need to update this Readme Section?](./2024/day-03/README.md)
