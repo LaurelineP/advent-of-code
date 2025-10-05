@@ -106,8 +106,8 @@ Different options are available using the specific commands
 - [x] Template-Based File Enhancements
       Utilize standardized templates for key files (such as index.ts and services.ts) to reduce duplication and enforce a uniform structure across all challenges.
 
-## 💻 Challenges
 
+## 💻 Challenges
 <details>
 	<summary>📌 2024, DAY 01</summary>
 
@@ -220,6 +220,7 @@ process is 31 (9 + 4 + 0 + 0 + 9 + 9).
 Once again consider your left and right lists.  
 What is their similarity score?
 
+
 </details>
 <details>
 	<summary>📌 2024, DAY 02</summary>
@@ -298,6 +299,7 @@ Thanks to the Problem Dampener, 4 reports are actually safe!
 
 Update your analysis by handling situations where the Problem Dampener can remove a single level from unsafe reports. How many reports are now safe?
 
+
 </details>
 <details>
 	<summary>📌 2024, DAY 03</summary>
@@ -328,5 +330,6 @@ Only the four highlighted sections are real `mul` instructions. Adding up the re
 Scan the corrupted memory for uncorrupted `mul` instructions. *What do you get if you add up all of the results of the multiplications?*
 
 ````
+
 
 </details>
