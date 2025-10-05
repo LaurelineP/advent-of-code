@@ -1,40 +1,37 @@
-import { getInputData, handleData }  from './services'
-import { logValue }  from '../../core/tools'
+import { getInputData, handleData } from "./services";
+import { logValue } from "../../core/tools";
 
+const runPartOne = (data: string) => {
+    console.info("\n1. Eval multiplications & Summed result");
 
-const runPartOne = (data: any) => {
-	console.info('\n1. Eval multiplications & Summed result')
+    const result = handleData(data, "runPartOne");
+    if (!result) {
+        console.warn("Couldn't compute a result");
+    }
+    logValue({ result });
+};
 
-	let result = handleData(data, 'runPartOne')
-	if( !result ){
-		console.warn('Couldn\'t compute a result')
-	}
-	logValue({ result })
+const runPartTwo = (data: string) => {
+    // WIP
+    console.info(
+        "\n2. Eval and Summed filtered out `don't()` remaining values",
+    );
 
-}
+    const result = handleData(data, "runPartTwo");
+    if (!result) {
+        console.warn("Couldn't compute a result");
+        return;
+    }
 
-const runPartTwo = (data: any) => {
-	// WIP
-	console.info('\n2. Eval and Summed filtered out `don\'t()` remaining values')
-	
-
-	const result = handleData(data, 'runPartTwo')
-	if( !result ){
-		console.warn('Couldn\'t compute a result')
-		return
-	}
-
-
-	logValue({ result })
-
-}
+    logValue({ result });
+};
 
 const runSolutions = async () => {
-	const data = await getInputData()
-	const fakeData = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
-	runPartOne(data)
-	runPartTwo(data)
-	/**
+    const data = (await getInputData()) || "";
+    // Example: "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
+    runPartOne(data);
+    runPartTwo(data);
+    /**
 		
 		1. Eval multiplications & Summed result
 		┌─────────┬───────────┐
@@ -43,5 +40,5 @@ const runSolutions = async () => {
 		│  value  │ 179571322 │
 		└─────────┴───────────┘
 	 */
-}
-runSolutions()
+};
+runSolutions();
